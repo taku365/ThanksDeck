@@ -1,0 +1,10 @@
+// {
+//   // 保存時に ESLint の fixAll を実行
+//   "editor.codeActionsOnSave": ["source.fixAll.eslint"]
+// }
+
+{
+  // 保存時に ESLint が出すすべての自動修正を適用する
+  "eslint.codeActionsOnSave.mode": "all",
+  "editor.codeActionsOnSave": ["source.fixAll"]
+}
