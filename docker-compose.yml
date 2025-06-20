@@ -24,5 +24,17 @@ services:
       - db
     tty: true
     stdin_open: true
+
+  next:
+    platform: linux/arm64/v8
+    build:
+      context: ./next
+      dockerfile: Dockerfile
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./next:/app
+    ports:
+      - "8000:3000"
 volumes:
   mysql_data:
