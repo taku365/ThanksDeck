@@ -1,0 +1,7 @@
+[alias]
+  #git cleanup feature/your-branch
+  cleanup = "!f() { git branch -d \"$1\" && git push origin --delete \"$1\"; }; f"
+  s = status
+  co = checkout
+  ci = commit
+  br = branch
