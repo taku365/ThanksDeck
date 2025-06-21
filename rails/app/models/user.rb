@@ -8,4 +8,6 @@ class User < ApplicationRecord
          :confirmable
 
   include DeviseTokenAuth::Concerns::User
+
+  has_many :cards, dependent: :destroy
 end
