@@ -1,0 +1,9 @@
+ja:
+  activerecord:
+    attributes:
+      user:
+        email: "メールアドレス"
+        name:  "ユーザー名"
+      card:
+        content:     "感謝内容"
+        logged_date: "記録日"
