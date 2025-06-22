@@ -45,6 +45,13 @@ class Api::V1::CardsController < Api::V1::BaseController
     end
   end
 
+  # DELETE /api/v1/cards/:id
+  def destroy
+    card = current_user.cards.find(params[:id])
+    card.destroy!
+    head :no_content
+  end
+
   private
 
     # 属性を限定してハッシュ化
