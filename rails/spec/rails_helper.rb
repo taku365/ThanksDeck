@@ -32,10 +32,17 @@ begin
 rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
+
+# supportディレクトリ内のファイルの読み込み
+Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+
 RSpec.configure do |config|
   # FactoryBotの宣言を省略
   config.include FactoryBot::Syntax::Methods
-  
+
+  #認証用ヘッダーをまとめる(認証済みのユーザーが持つaccess-token,uid,client)
+  config.include AuthHelpers, type: :request
+
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = [
     Rails.root.join('spec/fixtures')
