@@ -23,6 +23,8 @@ export default function SignInPage() {
   const router = useRouter()
   const { signIn } = useAuth()
   const { currentUser } = useCurrentUser()
+  const [isLoading, setIsLoading] = useState(false)
+  const [errorMessages, setErrorMessages] = useState<string[]>([])
 
   // React-Hook-Form
   const {
@@ -33,9 +35,6 @@ export default function SignInPage() {
     defaultValues: { email: '', password: '' },
     mode: 'onChange',
   })
-
-  const [isLoading, setIsLoading] = useState(false)
-  const [errorMessages, setErrorMessages] = useState<string[]>([])
 
   // すでにログイン済みならトップへ
   useEffect(() => {
@@ -66,6 +65,25 @@ export default function SignInPage() {
     }
   }
 
+  //バリデーションルール
+  const validationRules = {
+    email: {
+      required: 'メールアドレスを入力してください。',
+      pattern: {
+        value:
+          /^[a-zA-Z0-9_+-]+(\.[a-zA-Z0-9_+-]+)*@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/,
+        message: '正しい形式のメールアドレスを入力してください。',
+      },
+    },
+    password: {
+      required: 'パスワードを入力してください。',
+      minLength: {
+        value: 6,
+        message: 'パスワードは6文字以上で入力してください。',
+      },
+    },
+  }
+
   return (
     <Box sx={{ minHeight: '100vh' }}>
       <Container maxWidth="sm">
@@ -77,7 +95,7 @@ export default function SignInPage() {
 
         {errorMessages.length > 0 && (
           <Alert severity="error" sx={{ mb: 2 }}>
-            {errorMessages.join('、')}
+            {errorMessages}
           </Alert>
         )}
 
@@ -85,13 +103,7 @@ export default function SignInPage() {
           <Controller
             name="email"
             control={control}
-            rules={{
-              required: 'メールアドレスを入力してください。',
-              pattern: {
-                value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
-                message: '正しい形式のメールアドレスを入力してください。',
-              },
-            }}
+            rules={validationRules.email}
             render={({ field, fieldState }) => (
               <TextField
                 {...field}
@@ -107,13 +119,7 @@ export default function SignInPage() {
           <Controller
             name="password"
             control={control}
-            rules={{
-              required: 'パスワードを入力してください。',
-              minLength: {
-                value: 6,
-                message: 'パスワードは6文字以上で入力してください。',
-              },
-            }}
+            rules={validationRules.password}
             render={({ field, fieldState }) => (
               <TextField
                 {...field}
