@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
       # ユーザー認証APIエンドポイント
       namespace :user do
-        resource :confirmations, only: [:update]
+        resource :confirmations, only: [:update, :create]
       end
 
       namespace :current do
