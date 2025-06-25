@@ -17,15 +17,14 @@ export default function ConfirmationPage() {
     }
 
     const confirmAccount = async () => {
+      setIsLoading(true)
+
       try {
-        await api.patch('/user/confirmations', null, {
-          params: { confirmation_token },
-        })
+        await api.patch('/user/confirmations', { confirmation_token })
         setSuccessMessage(
           'アカウントが有効化されました。サインインページへ移動します。',
         )
-        // 1秒後にサインインへリダイレクト
-        setTimeout(() => router.push('/signin'), 1000)
+        setTimeout(() => router.push('/signin'), 1500)
       } catch (e) {
         if (isAxiosError(e)) {
           const axiosError = e as AxiosError<{ message: string }>
