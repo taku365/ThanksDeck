@@ -13,35 +13,35 @@ export default function ConfirmationPage() {
 
   useEffect(() => {
     if (!router.isReady || !confirmation_token) {
-      return;
+      return
     }
 
     const confirmAccount = async () => {
       try {
-        await api.patch("/user/confirmations", null, {
+        await api.patch('/user/confirmations', null, {
           params: { confirmation_token },
-        });
+        })
         setSuccessMessage(
-          "アカウントが有効化されました。サインインページへ移動します。"
-        );
+          'アカウントが有効化されました。サインインページへ移動します。',
+        )
         // 1秒後にサインインへリダイレクト
-        setTimeout(() => router.push("/signin"), 1000);
+        setTimeout(() => router.push('/signin'), 1000)
       } catch (e) {
         if (isAxiosError(e)) {
-          const axiosError = e as AxiosError<{ message: string }>;
+          const axiosError = e as AxiosError<{ message: string }>
           setErrorMessage(
             axiosError.response?.data?.message ??
-              "アカウントの有効化に失敗しました。"
-          );
+              'アカウントの有効化に失敗しました。',
+          )
         } else {
-          setErrorMessage("予期せぬエラーが発生しました");
+          setErrorMessage('予期せぬエラーが発生しました')
         }
       } finally {
-        setIsLoading(false);
+        setIsLoading(false)
       }
-    };
-    confirmAccount();
-  }, [router, router.isReady, confirmation_token]);
+    }
+    confirmAccount()
+  }, [router, router.isReady, confirmation_token])
 
   return (
     <Container maxWidth="xs" sx={{ mt: 8 }}>
