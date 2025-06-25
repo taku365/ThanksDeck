@@ -21,12 +21,14 @@ export const useAuth = () => {
       email: string,
       password: string,
       passwordConfirmation: string,
+      confirmSuccessUrl: string,
     ) => {
       const response = await api.post('/auth', {
         name,
         email,
         password,
         password_confirmation: passwordConfirmation,
+        confirm_success_url: confirmSuccessUrl,
       })
       const h = response.headers
       setAuthTokens({
