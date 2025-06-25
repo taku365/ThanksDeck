@@ -5,9 +5,15 @@ Rails.application.routes.draw do
       get "health_check", to: "health_check#index"
       mount_devise_token_auth_for "User", at: "auth"
 
+      # ユーザー認証APIエンドポイント
+      namespace :user do
+        resource :confirmations, only: [:update, :create]
+      end
+
       namespace :current do
         resource :user, only: [:show]
       end
+
       resources :cards, only: [:index, :show, :create, :update, :destroy]
     end
   end
