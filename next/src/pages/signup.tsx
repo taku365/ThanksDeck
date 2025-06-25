@@ -26,7 +26,6 @@ export default function SignUpPage() {
   const { signUp } = useAuth()
   const { currentUser } = useCurrentUser()
   const [isLoading, setIsLoading] = useState(false)
-  const [infoMessage, setInfoMessage] = useState<string>('')
   const [errorMessages, setErrorMessages] = useState<string[]>([])
   const confirmSuccessUrl = process.env.NEXT_PUBLIC_FRONT_BASE_URL + '/sign_in'
 
@@ -63,8 +62,10 @@ export default function SignUpPage() {
         data.passwordConfirmation,
         confirmSuccessUrl,
       )
-      setInfoMessage('認証メールを送信しました。')
-      router.push('/signin')
+      // サインアップ成功後は Pending ページへリダイレクト
+      router.push(
+        `/confirmation-pending?email=${encodeURIComponent(data.email)}`,
+      )
     } catch (e) {
       if (isAxiosError(e)) {
         console.log(e)
@@ -119,13 +120,6 @@ export default function SignUpPage() {
       {errorMessages.length > 0 && (
         <Alert severity="error" sx={{ mb: 2 }}>
           {errorMessages}
-        </Alert>
-      )}
-
-      {/* メール送信メッセージ */}
-      {infoMessage && (
-        <Alert severity="info" sx={{ mb: 2 }}>
-          {infoMessage}
         </Alert>
       )}
 
