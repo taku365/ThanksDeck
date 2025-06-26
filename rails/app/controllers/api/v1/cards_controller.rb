@@ -8,6 +8,12 @@ class Api::V1::CardsController < Api::V1::BaseController
     render json: serialize(cards), status: :ok
   end
 
+  # GET /api/v1/cards/today　今日のカード一覧
+  def today
+    cards = current_user.cards.where(logged_date: Date.current).order(logged_date: :desc)
+    render json: serialize(cards), status: :ok
+  end
+
   # Get /api/v1/cards/:id 詳細取得
   def show
     card = current_user.cards.find(params[:id])
