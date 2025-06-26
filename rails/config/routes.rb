@@ -14,7 +14,9 @@ Rails.application.routes.draw do
         resource :user, only: [:show]
       end
 
-      resources :cards, only: [:index, :show, :create, :update, :destroy]
+      resources :cards, only: [:index, :show, :create, :update, :destroy] do
+        get :today, on: :collection
+      end
     end
   end
 end
