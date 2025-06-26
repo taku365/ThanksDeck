@@ -6,7 +6,6 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { AppProps } from 'next/app'
 import * as React from 'react'
 
-import Layout from './components/Layout'
 import theme from '@/styles/theme'
 import createEmotionCache from '@/utils/createEmotionCache'
 
@@ -25,9 +24,7 @@ export default function MyApp(props: MyAppProps): JSX.Element {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+          <Component {...pageProps} />
         </LocalizationProvider>
       </ThemeProvider>
     </CacheProvider>

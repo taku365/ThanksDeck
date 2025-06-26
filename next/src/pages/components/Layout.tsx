@@ -39,6 +39,8 @@ export default function Layout({ children }: LayoutProps) {
         </Toolbar>
       </AppBar>
       <Container sx={{ mt: 2, mb: 2 }}>{children}</Container>
+
+      {/* フッター */}
       <Box component="footer" sx={{ py: 2, textAlign: 'center' }}>
         © {new Date().getFullYear()} ThanksDeck
       </Box>

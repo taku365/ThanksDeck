@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "Api::V1::Cards", type: :request do
   let(:user)   { create(:user, confirmed_at: Time.current) }
-  # createテストで新規作成ができなくなってしまうため、昨日作成した3件分のレコードオブジェクトを要素に持つ配列に設定
+  # 昨日のカードを３件作成(createテストで新規作成ができなくなってしまうため)
   let!(:cards) { create_list(:card, 3, user: user, logged_date: Date.yesterday) }
 
   # index
@@ -22,6 +22,32 @@ RSpec.describe "Api::V1::Cards", type: :request do
     context "認証なし" do
       it "401 Unauthorized が返る" do
         get "/api/v1/cards"
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+  end
+
+  # today
+  describe "GET /api/v1/cards/today" do
+    let!(:today_card) { create(:card, user: user, logged_date: Date.current) }
+
+    context "認証あり" do
+      let(:headers) { auth_headers_for(user).merge("Content-Type" => "application/json") }
+
+      it "200 が返り、今日の日付のカードだけが返ってくる" do
+        get "/api/v1/cards/today", headers: headers
+        expect(response).to have_http_status(:ok)
+        json = JSON.parse(response.body)
+        expect(json.size).to eq 1
+        expect(json.first["id"]).to eq today_card.id
+        expect(json.first["content"]).to eq today_card.content
+        expect(json.first["logged_date"]).to eq today_card.logged_date.to_s
+      end
+    end
+
+    context "認証なし" do
+      it "402 Unauthorized が返る" do
+        get "/api/v1/cards/today"
         expect(response).to have_http_status(:unauthorized)
       end
     end
