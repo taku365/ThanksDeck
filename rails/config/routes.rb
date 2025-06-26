@@ -16,6 +16,8 @@ Rails.application.routes.draw do
 
       resources :cards, only: [:index, :show, :create, :update, :destroy] do
         get :today, on: :collection
+
+        get "deck/:year/:month", to: "cards#deck", on: :collection
       end
     end
   end
