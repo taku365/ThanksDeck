@@ -8,6 +8,7 @@ export const api = axios.create({
     'Content-Type': 'application/json',
   },
 })
+console.log('baseURL:', api.defaults.baseURL)
 
 //リクエスト時に認証ヘッダーを自動付与
 api.interceptors.request.use((config) => {
