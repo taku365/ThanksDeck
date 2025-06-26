@@ -1,6 +1,6 @@
 import { Modal, Box, TextField, Button, Typography } from '@mui/material'
 import { isAxiosError } from 'axios'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 interface CardFormModalProps {
   open: boolean
@@ -10,7 +10,7 @@ interface CardFormModalProps {
     logged_date: string
   }
   onClose: () => void
-  onSave: (data: {
+  onCreate: (cardData: {
     id?: number
     content: string
     logged_date: string
@@ -32,31 +32,24 @@ export default function CardFormModal({
   open,
   initialData = {
     content: '',
-    // logged_date: new Date().toISOString().slice(0, 10),
-    // sv-SEロケールはYYYY-MM-DD形式の日付文字列を戻す
-    logged_date: new Date().toLocaleDateString('sv-SE'),
+    logged_date: new Date().toLocaleDateString('sv-SE'), //YYYY-MM-DD形式
   },
   onClose,
-  onSave,
+  onCreate,
 }: CardFormModalProps) {
   const [content, setContent] = useState(initialData.content)
   const [loggedDate, setLoggedDate] = useState(initialData.logged_date)
   const [errors, setErrors] = useState<string[]>([])
   const [saving, setSaving] = useState(false)
 
-  useEffect(() => {
-    setContent(initialData.content)
-    setLoggedDate(initialData.logged_date)
-    setErrors([])
-  }, [initialData, open])
-
+  //保存ボタンを押したときの処理
   const handleSave = async () => {
     setSaving(true)
     setErrors([])
     try {
-      await onSave({ id: initialData.id, content, logged_date: loggedDate })
+      await onCreate({ id: initialData.id, content, logged_date: loggedDate })
       onClose()
-    } catch (e: unknown) {
+    } catch (e) {
       if (isAxiosError(e)) {
         setErrors(e.response?.data?.errors ?? ['保存に失敗しました'])
       } else {
@@ -104,9 +97,12 @@ export default function CardFormModal({
         />
 
         <Box mt={3} display="flex" justifyContent="flex-end">
+          {/* キャンセル */}
           <Button onClick={onClose} disabled={saving} sx={{ mr: 1 }}>
             キャンセル
           </Button>
+
+          {/* 保存 */}
           <Button
             variant="contained"
             onClick={handleSave}

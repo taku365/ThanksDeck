@@ -1,4 +1,3 @@
-// next/src/hooks/useAuth.ts
 import { useCallback } from 'react'
 import { api } from '../utils/api'
 import { setAuthTokens, clearAuthTokens } from '../utils/tokenStorage'
