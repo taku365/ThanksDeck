@@ -1,5 +1,5 @@
 import AddIcon from '@mui/icons-material/Add'
-import { CircularProgress, Fab, Typography } from '@mui/material'
+import { Box, Button, CircularProgress, Fab, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import useSWR from 'swr'
@@ -15,7 +15,7 @@ export default function Dashboard() {
   const { currentUser, isLoading } = useCurrentUser()
 
   //今日のカード一覧を取得
-  const { data: todaysCards, mutate } = useSWR('/cards/today', fetcher)
+  const { data: todaysCards, mutate, error } = useSWR('/cards/today', fetcher)
 
   //今日の残り投稿数
   const remaining = 3 - (todaysCards?.length ?? 0)
@@ -42,13 +42,73 @@ export default function Dashboard() {
     setModalOpen(false)
   }
 
+  // ロード中
+  if (!todaysCards && !error) {
+    return (
+      <Layout>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+          <CircularProgress />
+        </Box>
+      </Layout>
+    )
+  }
+
+  // エラー表示
+  if (error) {
+    return (
+      <Layout>
+        <Typography color="error" align="center" sx={{ mt: 4 }}>
+          カードの取得に失敗しました。再読み込みしてください。
+        </Typography>
+      </Layout>
+    )
+  }
+
   return (
     <Layout>
+      {/* 残り作成数の表示 */}
       <Typography fontWeight="fontWeightBold" variant="h6">
-        {remaining > 0 ? `あと ${remaining}件` : '今日の投稿は上限に達しました'}
+        {remaining > 0
+          ? `【今日の残り作成数】あと ${remaining}件`
+          : '今日の投稿は上限に達しました'}
       </Typography>
 
+      {/* ThanksCard作成ボタン */}
+      <Button
+        variant="outlined"
+        sx={{
+          mt: 5,
+          width: 300,
+          mx: 'auto',
+          display: 'block',
+          textTransform: 'none',
+        }}
+        onClick={() => setModalOpen(true)}
+      >
+        ThanksCardを作成する
+      </Button>
+
+      {/* 今日のカード一覧 */}
       <CardList todaysCards={todaysCards} />
+
+      <Typography variant="h6" mt={4} mb={2}>
+        最近のThanksCard
+      </Typography>
+
+      {/* ThanksDeck移動ボタン */}
+      <Button
+        variant="outlined"
+        sx={{
+          mt: 5,
+          width: 300,
+          mx: 'auto',
+          display: 'block',
+          textTransform: 'none',
+        }}
+        onClick={() => router.push('/cards')}
+      >
+        ThanksDeckを確認する
+      </Button>
 
       {/* モーダルを閉じたときに内容を残さない */}
       {modalOpen && (
