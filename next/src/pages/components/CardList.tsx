@@ -2,21 +2,21 @@ import { Grid, Typography } from '@mui/material'
 import CardItem from './CardItem'
 
 interface CardListProps {
-  cards: Array<{
+  todaysCards: Array<{
     id: number
     content: string
     logged_date: string
   }>
 }
 
-export default function CardList({ cards }: CardListProps) {
-  if (!cards || cards.length === 0) {
-    return <Typography>まだ投稿がありません</Typography>
+export default function CardList({ todaysCards }: CardListProps) {
+  if (!todaysCards || todaysCards.length === 0) {
+    return <Typography>ThanksCardを作成しよう!</Typography>
   }
 
   return (
     <Grid container spacing={2}>
-      {cards.map((card) => (
+      {todaysCards.map((card) => (
         <Grid item key={card.id} xs={12} sm={4}>
           <CardItem {...card} />
         </Grid>
