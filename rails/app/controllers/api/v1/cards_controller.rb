@@ -14,6 +14,22 @@ class Api::V1::CardsController < Api::V1::BaseController
     render json: serialize(cards), status: :ok
   end
 
+  # GET /api/v1/cards/deck/:year/:month 今月のカード一覧取得
+  def deck
+    year = params[:year].to_i
+    month = params[:month].to_i
+
+    first_day = Date.new(year, month, 1)
+    last_day = first_day.end_of_month
+
+    cards = current_user.cards.where(logged_date: first_day..last_day).order(logged_date: :desc)
+    render json: serialize(cards), status: :ok
+  rescue ArgumentError
+    # Date.new の引数が不正だった場合
+    render json: { errors: ["無効な年月です"] },
+           status: :bad_request
+  end
+
   # Get /api/v1/cards/:id 詳細取得
   def show
     card = current_user.cards.find(params[:id])

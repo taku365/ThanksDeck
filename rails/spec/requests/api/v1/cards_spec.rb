@@ -53,6 +53,52 @@ RSpec.describe "Api::V1::Cards", type: :request do
     end
   end
 
+  # deck
+  describe "GET /api/v1/cards/deck/:year/:month" do
+    before do
+      Card.delete_all
+      this_month_card_a; this_month_card_b; last_month_card
+    end
+
+    # 今月のカードを 2 件作成
+    let(:this_month_card_a) { create(:card, user: user, logged_date: Date.current.beginning_of_month + 5.days) }
+    let(:this_month_card_b) { create(:card, user: user, logged_date: Date.current.beginning_of_month + 10.days) }
+    # 今月以外のカードを 1 件作成（フィルタ対象外）
+    let(:last_month_card) { create(:card, user: user, logged_date: (Date.current - 1.month).beginning_of_month + 3.days) }
+
+    let(:year)  { Date.current.year.to_s }
+    let(:month) { Date.current.month.to_s }
+
+    context "認証あり" do
+      let(:headers) { auth_headers_for(user).merge("Content-Type" => "application/json") }
+
+      it "200 が返り、指定月のカードだけが返ってくる" do
+        get "/api/v1/cards/deck/#{year}/#{month}", headers: headers
+
+        expect(response).to have_http_status(:ok)
+        json = JSON.parse(response.body)
+
+        # フィルタ対象外の last_month_card は含まれない
+        expect(json.map {|c| c["id"] }).to contain_exactly(
+          this_month_card_a.id,
+          this_month_card_b.id,
+        )
+
+        # データの中身チェック
+        card = json.find {|c| c["id"] == this_month_card_a.id }
+        expect(card["content"]).to eq this_month_card_a.content
+        expect(card["logged_date"]).to eq this_month_card_a.logged_date.to_s
+      end
+    end
+
+    context "認証なし" do
+      it "401 Unauthorized が返る" do
+        get "/api/v1/cards/deck/#{year}/#{month}"
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+  end
+
   # show
   describe "GET /api/v1/cards/:id" do
     let(:card) { cards.first }
