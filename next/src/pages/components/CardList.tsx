@@ -11,13 +11,17 @@ interface CardListProps {
 
 export default function CardList({ todaysCards }: CardListProps) {
   if (!todaysCards || todaysCards.length === 0) {
-    return <Typography>ThanksCardを作成しよう!</Typography>
+    return (
+      <Typography textAlign="center" sx={{ mt: 5 }}>
+        ThanksCardを作成しよう!
+      </Typography>
+    )
   }
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} sx={{ mt: 1 }}>
       {todaysCards.map((card) => (
-        <Grid item key={card.id} xs={12} sm={4}>
+        <Grid item key={card.id} xs={4} sm={12}>
           <CardItem {...card} />
         </Grid>
       ))}
