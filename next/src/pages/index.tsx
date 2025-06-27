@@ -15,10 +15,10 @@ export default function Dashboard() {
   const { currentUser, isLoading } = useCurrentUser()
 
   //今日のカード一覧を取得
-  const { data: todaysCards, mutate, error } = useSWR('/cards/today', fetcher)
+  const { data: cards, mutate, error } = useSWR('/cards/today', fetcher)
 
   //今日の残り投稿数
-  const remaining = 3 - (todaysCards?.length ?? 0)
+  const remaining = 3 - (cards?.length ?? 0)
 
   useEffect(() => {
     if (!isLoading && !currentUser) {
@@ -43,7 +43,7 @@ export default function Dashboard() {
   }
 
   // ロード中
-  if (!todaysCards && !error) {
+  if (!cards && !error) {
     return (
       <Layout>
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
@@ -89,7 +89,7 @@ export default function Dashboard() {
       </Button>
 
       {/* 今日のカード一覧 */}
-      <CardList todaysCards={todaysCards} />
+      <CardList cards={cards} />
 
       <Typography variant="h6" mt={4} mb={2}>
         最近のThanksCard
