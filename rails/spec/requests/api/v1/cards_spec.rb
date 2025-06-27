@@ -155,7 +155,7 @@ RSpec.describe "Api::V1::Cards", type: :request do
 
         expect(response).to have_http_status(:unprocessable_entity)
         json = JSON.parse(response.body)
-        expect(json["errors"]).to include("今日のカードは上限に達しました")
+        expect(json["errors"]).to include("この日のカードは上限に達しました")
       end
     end
 
