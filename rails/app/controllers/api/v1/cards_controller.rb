@@ -38,11 +38,12 @@ class Api::V1::CardsController < Api::V1::BaseController
 
   # POST /api/v1/cards カードの作成
   def create
-    # 今日の作成済みカード数をカウント
-    today_count = current_user.cards.where(logged_date: Time.zone.today).count
+    # 作成しようとしている日付のカード数をカウント
+    target_date = card_params[:logged_date]
+    today_count = current_user.cards.where(logged_date: target_date).count
 
     if today_count >= 3
-      return render json: { errors: ["今日のカードは上限に達しました"] },
+      return render json: { errors: ["この日のカードは上限に達しました"] },
                     status: :unprocessable_entity
     end
 
