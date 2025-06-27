@@ -1,5 +1,5 @@
 import AddIcon from '@mui/icons-material/Add'
-import { Fab, CircularProgress } from '@mui/material'
+import { Fab, CircularProgress, Typography, Box, Button } from '@mui/material'
 import dayjs from 'dayjs'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
@@ -63,8 +63,18 @@ export default function MonthlyDeckPage() {
   if (!cards && !error) return <CircularProgress />
   if (error) return <p>取得エラー</p>
 
+  const goToDashboard = () => {
+    router.push('/')
+  }
+
   return (
     <Layout>
+      <Box sx={{ mb: 2 }}>
+        <Button variant="outlined" onClick={goToDashboard}>
+          ダッシュボードに戻る
+        </Button>
+      </Box>
+
       <CalendarMini
         year={currentYear}
         month={currentMonth}
@@ -75,11 +85,11 @@ export default function MonthlyDeckPage() {
       />
 
       {/* 選択日がある場合は日付ヘッダー */}
-      {selectedDate && (
-        <h3 style={{ marginTop: 24 }}>
-          {dayjs(selectedDate).format('YYYY年M月D日（ddd）')}
-        </h3>
-      )}
+      <Typography fontWeight="fontWeightMedium" sx={{ mt: 3, mb: 2 }}>
+        {selectedDate
+          ? dayjs(selectedDate).format('YYYY年M月D日')
+          : `${currentMonth}月のThanksDeck`}
+      </Typography>
 
       {/* 選択日に紐づくカード一覧 or 該当月のカード一覧 */}
       <CardList cards={filtered ?? []} />
