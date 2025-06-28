@@ -64,7 +64,7 @@ export default function MonthlyDeckPage() {
   if (error) return <p>取得エラー</p>
 
   const goToDashboard = () => {
-    router.push('/')
+    router.push('/mypage')
   }
 
   return (

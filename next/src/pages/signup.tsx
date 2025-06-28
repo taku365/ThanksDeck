@@ -46,7 +46,7 @@ export default function SignUpPage() {
 
   // すでにログイン済みならトップへ
   useEffect(() => {
-    if (currentUser) router.replace('/')
+    if (currentUser) router.replace('/mypage')
   }, [currentUser, router])
 
   //送信処理
