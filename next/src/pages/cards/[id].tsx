@@ -79,7 +79,7 @@ export default function CardDetailPage() {
 
   //Xシェア
   const XText = encodeURIComponent(card.content)
-  const shareUrl = `https://twitter.com/intent/tweet?text=${XText}`
+  const shareUrl = `https://twitter.com/intent/tweet?text=${XText}&hashtags=ThanksDeck`;
 
   return (
     <Layout>
