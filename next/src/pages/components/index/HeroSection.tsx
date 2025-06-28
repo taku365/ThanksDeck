@@ -10,7 +10,7 @@ export default function HeroSection() {
       component="section"
       sx={{
         bgcolor: 'background.default',
-        minHeight: '80vh',
+        minHeight: '60vh',
         py: 4,
         display: 'flex',
         flexDirection: 'column',
