@@ -1,4 +1,14 @@
-import { Modal, Box, TextField, Button, Typography } from '@mui/material'
+import {
+  Modal,
+  Box,
+  TextField,
+  Button,
+  Typography,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from '@mui/material'
 import { isAxiosError } from 'axios'
 import { useState } from 'react'
 
@@ -41,6 +51,7 @@ export default function CardFormModal({
   const [loggedDate, setLoggedDate] = useState(initialData.logged_date)
   const [errors, setErrors] = useState<string[]>([])
   const [saving, setSaving] = useState(false)
+  const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false)
 
   //保存ボタンを押したときの処理
   const handleSave = async () => {
@@ -60,58 +71,111 @@ export default function CardFormModal({
     }
   }
 
+  // モーダルを閉じようとした（背景クリックやEsc含む）とき
+  const handleRequestClose = () => {
+    if (content === initialData.content) {
+      onClose()
+    } else {
+      setIsCancelDialogOpen(true)
+    }
+  }
+
   return (
-    <Modal open={open} onClose={onClose}>
-      <Box sx={style}>
-        <Typography variant="h6" mb={2}>
-          {initialData.id != null ? '編集する' : 'ThanksCardを作成'}
-        </Typography>
-
-        {errors.map((err, i) => (
-          <Typography color="error" key={i}>
-            {err}
+    <>
+      <Modal open={open} onClose={handleRequestClose}>
+        <Box sx={style}>
+          <Typography variant="h6" mb={2}>
+            {initialData.id != null ? '編集する' : 'ThanksCardを作成'}
           </Typography>
-        ))}
 
-        <TextField
-          label="感謝内容"
-          placeholder="ありがとう"
-          multiline
-          rows={4}
-          fullWidth
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          inputProps={{ maxLength: 140 }}
-          helperText={`${content.length}/140`}
-          sx={{ mt: 2 }}
-        />
+          {errors.map((err, i) => (
+            <Typography color="error" key={i}>
+              {err}
+            </Typography>
+          ))}
 
-        <TextField
-          label="記録日"
-          type="date"
-          fullWidth
-          value={loggedDate}
-          onChange={(e) => setLoggedDate(e.target.value)}
-          sx={{ mt: 2 }}
-          InputLabelProps={{ shrink: true }}
-        />
+          <TextField
+            label="感謝内容"
+            placeholder="ありがとう"
+            multiline
+            rows={4}
+            fullWidth
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            helperText={
+              <span
+                style={{
+                  color: content.length > 140 ? 'red' : undefined,
+                }}
+              >
+                {content.length}/140
+              </span>
+            }
+            sx={{ mt: 2 }}
+          />
 
-        <Box mt={3} display="flex" justifyContent="flex-end">
-          {/* キャンセル */}
-          <Button onClick={onClose} disabled={saving} sx={{ mr: 1 }}>
-            キャンセル
-          </Button>
+          <TextField
+            label="記録日"
+            type="date"
+            fullWidth
+            value={loggedDate}
+            onChange={(e) => setLoggedDate(e.target.value)}
+            sx={{ mt: 2 }}
+            InputLabelProps={{ shrink: true }}
+          />
 
-          {/* 保存 */}
-          <Button
-            variant="contained"
-            onClick={handleSave}
-            disabled={saving || !content}
-          >
-            {saving ? '保存中...' : '保存する'}
-          </Button>
+          <Box mt={3} display="flex" justifyContent="flex-end">
+            {/* キャンセル */}
+            <Button
+              onClick={handleRequestClose}
+              disabled={saving}
+              sx={{ mr: 1 }}
+            >
+              キャンセル
+            </Button>
+
+            {/* 保存 */}
+            <Button
+              variant="contained"
+              onClick={handleSave}
+              disabled={saving || content.length === 0 || content.length > 140}
+            >
+              {saving ? '保存中...' : '保存する'}
+            </Button>
+          </Box>
         </Box>
-      </Box>
-    </Modal>
+      </Modal>
+
+      {/* キャンセル確認ダイヤログ */}
+      <Dialog
+        open={isCancelDialogOpen}
+        onClose={() => setIsCancelDialogOpen(false)}
+      >
+        <DialogTitle>編集中の内容が破棄されます</DialogTitle>
+        <DialogContent>
+          内容が保存されません。キャンセルしてもよろしいですか？
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => setIsCancelDialogOpen(false)}
+            disabled={saving}
+          >
+            いいえ
+          </Button>
+          <Button
+            color="error"
+            onClick={() => {
+              setContent(initialData.content)
+              setErrors([])
+              setIsCancelDialogOpen(false)
+              onClose()
+            }}
+            disabled={saving}
+          >
+            変更を破棄
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   )
 }
