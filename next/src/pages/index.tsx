@@ -15,10 +15,6 @@ export default function PublicThanksDeck() {
         <HeroSection />
         <FeatureSection />
         <FooterLinks />
-
-        <div>ここで新規登録やログイン</div>
-        <Button onClick={() => router.push('/signup')}>新規登録ボタン</Button>
-        <Button onClick={() => router.push('/signin')}>ログイン</Button>
       </Layout>
     </>
   )
