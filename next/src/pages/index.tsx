@@ -20,6 +20,7 @@ export default function Dashboard() {
   //今日の残り投稿数
   const remaining = 3 - (cards?.length ?? 0)
 
+  //認証ガード
   useEffect(() => {
     if (!isLoading && !currentUser) {
       router.replace('/signin')
@@ -27,7 +28,6 @@ export default function Dashboard() {
   }, [isLoading, currentUser, router])
 
   if (isLoading) return <CircularProgress />
-
   if (!currentUser) return null
 
   //カード作成処理
