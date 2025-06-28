@@ -38,7 +38,7 @@ export default function SignInPage() {
 
   // すでにログイン済みならトップへ
   useEffect(() => {
-    if (currentUser) router.replace('/')
+    if (currentUser) router.replace('/mypage')
   }, [currentUser, router])
 
   //送信処理
@@ -47,7 +47,7 @@ export default function SignInPage() {
     setErrorMessages([])
     try {
       await signIn(data.email, data.password)
-      router.push('/')
+      router.push('/mypage')
     } catch (e) {
       console.log(e)
       if (isAxiosError(e)) {
