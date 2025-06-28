@@ -73,7 +73,11 @@ export default function CardFormModal({
 
   // モーダルを閉じようとした（背景クリックやEsc含む）とき
   const handleRequestClose = () => {
-    setIsCancelDialogOpen(true)
+    if (content === initialData.content) {
+      onClose()
+    } else {
+      setIsCancelDialogOpen(true)
+    }
   }
 
   return (
@@ -123,7 +127,7 @@ export default function CardFormModal({
           <Box mt={3} display="flex" justifyContent="flex-end">
             {/* キャンセル */}
             <Button
-              onClick={() => setIsCancelDialogOpen(true)}
+              onClick={handleRequestClose}
               disabled={saving}
               sx={{ mr: 1 }}
             >
