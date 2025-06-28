@@ -1,12 +1,12 @@
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
+import CreateIcon from '@mui/icons-material/Create'
+import ShareIcon from '@mui/icons-material/Share'
 import { Box, Grid, Typography } from '@mui/material'
 import React from 'react'
-import CreateIcon from "@mui/icons-material/Create";
-import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import ShareIcon from "@mui/icons-material/Share";
 
 export default function FeatureSection() {
   return (
-    <Box component="section" sx={{ py: 6, bgcolor: "background.paper" }}>
+    <Box component="section" sx={{ py: 6, bgcolor: 'background.paper' }}>
       {/* タイトル */}
       <Typography variant="h4" align="center" sx={{ mb: 4, fontWeight: 700 }}>
         特徴紹介
@@ -53,5 +53,5 @@ export default function FeatureSection() {
         </Grid>
       </Grid>
     </Box>
-  );
+  )
 }
