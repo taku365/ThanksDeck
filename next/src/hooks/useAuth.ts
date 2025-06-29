@@ -50,7 +50,7 @@ export const useAuth = () => {
   const signOut = useCallback(async () => {
     await api.delete('/auth/sign_out')
     clearAuthTokens()
-    await refresh()
+    await refresh(undefined, { revalidate: false })
   }, [refresh])
 
   return { signIn, signUp, signOut }

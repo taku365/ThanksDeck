@@ -4,6 +4,7 @@ import { ThemeProvider } from '@mui/material/styles'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { AppProps } from 'next/app'
+import '@/styles/destyle.css'
 import * as React from 'react'
 
 import theme from '@/styles/theme'

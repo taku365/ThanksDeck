@@ -60,7 +60,17 @@ export default function Layout({ children }: LayoutProps) {
     <>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+          <Typography
+            variant="h6"
+            sx={{ flexGrow: 1, cursor: 'pointer' }}
+            onClick={() => {
+              if (currentUser) {
+                router.push('/mypage')
+              } else {
+                router.push('/')
+              }
+            }}
+          >
             ThanksDeck
           </Typography>
 
