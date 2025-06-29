@@ -4,7 +4,6 @@ import {
   Toolbar,
   Typography,
   Container,
-  Box,
   IconButton,
   Menu,
   MenuItem,
@@ -42,8 +41,8 @@ export default function Layout({ children }: LayoutProps) {
 
       {/* フッター */}
       {/* <Box component="footer" sx={{ py: 2, textAlign: 'center' }}>
-        © {new Date().getFullYear()} ThanksDeck
-      </Box> */}
+       © {new Date().getFullYear()} ThanksDeck
+     </Box> */}
     </>
   )
 }

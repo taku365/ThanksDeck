@@ -24,25 +24,34 @@ export default function HeroSection() {
       >
         {/* 見出しとサブテキスト */}
         <Typography variant="h2" component="h1" sx={{ fontWeight: 700 }}>
-          もう感謝を忘れない
+          もう
+          <Box component="span" sx={{ color: 'secondary.main' }}>
+            感謝
+          </Box>
+          を忘れない
         </Typography>
         <Typography variant="subtitle1">
           ThanksCardを集めて、毎日をちょっと好きに
+          <br />
+          心を整える、感謝の記録
         </Typography>
-        <Typography variant="subtitle1">心を整える、感謝の記録</Typography>
 
         {/* アクションボタン */}
         <Stack spacing={2} alignItems="center">
           <Button
             variant="contained"
-            color="primary"
+            color="secondary"
             size="large"
             sx={{
               width: { xs: '100%', sm: 400 },
               borderRadius: 3,
+              borderWidth: '2px', // 枠の太さ
+              borderStyle: 'solid', // 枠線のスタイル
+              borderColor: 'primary.main',
               py: 2,
               fontSize: '1.3rem',
               textTransform: 'none',
+              fontWeight: 700,
             }}
             onClick={() => router.push('/signup')}
           >
