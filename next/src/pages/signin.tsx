@@ -79,7 +79,7 @@ export default function SignInPage() {
 
   return (
     <Layout>
-      <Box sx={{ minHeight: '100vh' }}>
+      <Box sx={{ minHeight: '100vh-64px' }}>
         <Box
           sx={{
             mt: 10,

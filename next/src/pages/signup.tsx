@@ -1,8 +1,11 @@
+import GoogleIcon from '@mui/icons-material/Google'
 import { LoadingButton } from '@mui/lab'
 import {
   Alert,
   Box,
+  Button,
   Container,
+  Divider,
   Stack,
   TextField,
   Typography,
@@ -11,6 +14,7 @@ import { isAxiosError } from 'axios'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
+import Layout from './components/Layout'
 import { useAuth } from '@/hooks/useAuth'
 import { useCurrentUser } from '@/hooks/useCurrentUser'
 
@@ -30,11 +34,7 @@ export default function SignUpPage() {
   const confirmSuccessUrl = process.env.NEXT_PUBLIC_FRONT_BASE_URL + '/sign_in'
 
   // React-Hook-Form
-  const {
-    control,
-    handleSubmit,
-    formState: { isValid },
-  } = useForm<SignUpFormData>({
+  const { control, handleSubmit } = useForm<SignUpFormData>({
     defaultValues: {
       name: '',
       email: '',
@@ -108,99 +108,167 @@ export default function SignUpPage() {
     },
   }
 
+  //入力デザイン
+  const fieldSx = {
+    borderRadius: 3,
+    '& .MuiOutlinedInput-root': {
+      borderRadius: 3,
+      backgroundColor: '#F6F6F6',
+    },
+  }
+
   return (
-    <Container maxWidth="xs">
-      <Box sx={{ mb: 4, pt: 4 }}>
-        <Typography variant="h4" fontWeight="bold" align="center">
-          ThanksCardを作成する
-        </Typography>
-      </Box>
-
-      {/* エラーメッセージ */}
-      {errorMessages.length > 0 && (
-        <Alert severity="error" sx={{ mb: 2 }}>
-          {errorMessages}
-        </Alert>
-      )}
-
-      <Stack component="form" spacing={3} onSubmit={handleSubmit(onSubmit)}>
-        {/* 名前 */}
-        <Controller
-          name="name"
-          control={control}
-          rules={validationRules.name}
-          render={({ field, fieldState }) => (
-            <TextField
-              {...field}
-              label="名前"
-              error={!!fieldState.error}
-              helperText={fieldState.error?.message}
-              fullWidth
-            />
-          )}
-        />
-
-        {/* メールアドレス */}
-        <Controller
-          name="email"
-          control={control}
-          rules={validationRules.email}
-          render={({ field, fieldState }) => (
-            <TextField
-              {...field}
-              label="メールアドレス"
-              type="email"
-              error={!!fieldState.error}
-              helperText={fieldState.error?.message}
-              fullWidth
-            />
-          )}
-        />
-
-        {/* パスワード */}
-        <Controller
-          name="password"
-          control={control}
-          rules={validationRules.password}
-          render={({ field, fieldState }) => (
-            <TextField
-              {...field}
-              label="パスワード"
-              type="password"
-              error={!!fieldState.error}
-              helperText={fieldState.error?.message}
-              fullWidth
-            />
-          )}
-        />
-
-        {/* 確認用パスワード */}
-        <Controller
-          name="passwordConfirmation"
-          control={control}
-          rules={validationRules.passwordConfirmation}
-          render={({ field, fieldState }) => (
-            <TextField
-              {...field}
-              label="パスワード(確認用)"
-              type="password"
-              error={!!fieldState.error}
-              helperText={fieldState.error?.message}
-              fullWidth
-            />
-          )}
-        />
-
-        <LoadingButton
-          type="submit"
-          variant="contained"
-          loading={isLoading}
-          disabled={!isValid || isLoading}
-          fullWidth
+    <Layout>
+      <Box sx={{ minHeight: '100vh-64px' }}>
+        <Box
+          sx={{
+            maxWidth: 600,
+            mx: 'auto',
+            mt: 7,
+            bgcolor: '#FFF9EB',
+            px: 2,
+            py: 5,
+            borderRadius: 3,
+            borderWidth: '2px',
+            borderStyle: 'solid',
+            borderColor: 'primary.main',
+          }}
         >
-          新規登録
-        </LoadingButton>
-      </Stack>
-    </Container>
+          <Container maxWidth="sm">
+            <Box sx={{ mb: 4, pt: 4 }}>
+              <Typography variant="h4" fontWeight="bold" align="center">
+                ThanksCardを作成する
+              </Typography>
+            </Box>
+
+            {/* エラーメッセージ */}
+            {errorMessages.length > 0 && (
+              <Alert severity="error" sx={{ mb: 2 }}>
+                {errorMessages}
+              </Alert>
+            )}
+
+            <Stack
+              component="form"
+              spacing={3}
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              {/* 名前 */}
+              <Controller
+                name="name"
+                control={control}
+                rules={validationRules.name}
+                render={({ field, fieldState }) => (
+                  <TextField
+                    {...field}
+                    label="名前"
+                    error={!!fieldState.error}
+                    helperText={fieldState.error?.message}
+                    fullWidth
+                    sx={fieldSx}
+                  />
+                )}
+              />
+              {/* メールアドレス */}
+              <Controller
+                name="email"
+                control={control}
+                rules={validationRules.email}
+                render={({ field, fieldState }) => (
+                  <TextField
+                    {...field}
+                    label="メールアドレス"
+                    type="email"
+                    error={!!fieldState.error}
+                    helperText={fieldState.error?.message}
+                    fullWidth
+                    sx={fieldSx}
+                  />
+                )}
+              />
+              {/* パスワード */}
+              <Controller
+                name="password"
+                control={control}
+                rules={validationRules.password}
+                render={({ field, fieldState }) => (
+                  <TextField
+                    {...field}
+                    label="パスワード"
+                    type="password"
+                    error={!!fieldState.error}
+                    helperText={fieldState.error?.message}
+                    fullWidth
+                    sx={fieldSx}
+                  />
+                )}
+              />
+              {/* 確認用パスワード */}
+              <Controller
+                name="passwordConfirmation"
+                control={control}
+                rules={validationRules.passwordConfirmation}
+                render={({ field, fieldState }) => (
+                  <TextField
+                    {...field}
+                    label="パスワード(確認用)"
+                    type="password"
+                    error={!!fieldState.error}
+                    helperText={fieldState.error?.message}
+                    fullWidth
+                    sx={fieldSx}
+                  />
+                )}
+              />
+              <LoadingButton
+                type="submit"
+                variant="contained"
+                loading={isLoading}
+                disabled={isLoading}
+                fullWidth
+                size="large"
+                color="secondary"
+                sx={{
+                  fontWeight: 700,
+                  borderRadius: 3,
+                  borderWidth: '2px',
+                  borderStyle: 'solid',
+                  borderColor: 'primary.main',
+                }}
+              >
+                新規登録
+              </LoadingButton>
+              {/* ── or 区切り線 */}
+              <Box sx={{ display: 'flex', alignItems: 'center', my: 2 }}>
+                <Divider sx={{ flexGrow: 1 }} />
+                <Typography
+                  variant="body2"
+                  sx={{ mx: 2, color: 'text.secondary' }}
+                >
+                  または
+                </Typography>
+                <Divider sx={{ flexGrow: 1 }} />
+              </Box>
+              {/* Google サインアップ */}
+              <Button
+                variant="outlined"
+                fullWidth
+                startIcon={<GoogleIcon />}
+                sx={{
+                  textTransform: 'none',
+                  borderRadius: 2,
+                  borderColor: 'grey.400',
+                  bgcolor: 'common.white',
+                  '&:hover': { bgcolor: 'grey.100' },
+                }}
+                onClick={() => router.push('/auth/google')}
+              >
+                Googleで登録
+              </Button>
+            </Stack>
+          </Container>
+        </Box>
+      </Box>
+    </Layout>
   )
 }

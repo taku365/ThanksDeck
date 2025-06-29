@@ -1,7 +1,8 @@
-import { Container, Alert, Button, Box } from '@mui/material'
+import { Container, Alert, Button, Box, Typography } from '@mui/material'
 import { AxiosError, isAxiosError } from 'axios'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
+import Layout from './components/Layout'
 import { api } from '@/utils/api'
 
 export default function ConfirmationPendingPage() {
@@ -47,25 +48,53 @@ export default function ConfirmationPendingPage() {
   }
 
   return (
-    <Container maxWidth="xs" sx={{ mt: 8 }}>
-      {/* 警告メッセージ */}
-      <Alert severity="warning" sx={{ mb: 2 }}>
-        認証メールを送信しました。メールが届かない場合は下のボタンで再送信できます。
-      </Alert>
-
-      {/* 再送信ボタン */}
-      <Box sx={{ textAlign: 'center', mb: 2 }}>
-        <Button variant="outlined" onClick={resend} disabled={isResending}>
-          {isResending ? '再送信中…' : '確認メールを再送信'}
-        </Button>
-      </Box>
-
-      {/* フィードバックメッセージ */}
-      {feedbackMessage && (
-        <Alert severity={feedbackSeverity} sx={{ mb: 2 }}>
-          {feedbackMessage}
+    <Layout>
+      <Container maxWidth="sm" sx={{ mt: 8 }}>
+        {/* 警告メッセージはそのまま外に */}
+        <Alert severity="warning" sx={{ mb: 3 }}>
+          1時間以内に認証を完了させなかった場合、メールリンクは無効になります。
         </Alert>
-      )}
-    </Container>
+
+        {/* フィードバックメッセージ */}
+        {feedbackMessage && (
+          <Alert severity={feedbackSeverity} sx={{ mb: 3 }}>
+            {feedbackMessage}
+          </Alert>
+        )}
+
+        <Box
+          sx={{
+            bgcolor: '#FFFFFF',
+            boxShadow: 1,
+            borderRadius: 2,
+            p: 3,
+            textAlign: 'center',
+          }}
+        >
+          {/* 見出し */}
+          <Typography variant="h6" gutterBottom sx={{ fontWeight: 700 }}>
+            認証用メールを送信しました
+          </Typography>
+
+          {/* 説明文 */}
+          <Typography variant="body2" sx={{ color: 'text.secondary', mb: 3 }}>
+            届いたメールに記載されたURLをクリックして登録を完了させてください。
+            <br />
+            メールが受信できない場合は迷惑メールに振り分けられていないかご確認ください。
+          </Typography>
+
+          {/* 再送信ボタン */}
+          <Button
+            variant="contained"
+            onClick={resend}
+            disabled={isResending}
+            color="secondary"
+            size="large"
+          >
+            {isResending ? '再送信中…' : 'メールを再送信する'}
+          </Button>
+        </Box>
+      </Container>
+    </Layout>
   )
 }
