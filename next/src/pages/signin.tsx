@@ -9,10 +9,9 @@ import {
 } from '@mui/material'
 import { isAxiosError } from 'axios'
 import { useRouter } from 'next/router'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { useAuth } from '@/hooks/useAuth'
-import { useCurrentUser } from '@/hooks/useCurrentUser'
 
 interface SignInFormData {
   email: string
@@ -22,7 +21,6 @@ interface SignInFormData {
 export default function SignInPage() {
   const router = useRouter()
   const { signIn } = useAuth()
-  const { currentUser } = useCurrentUser()
   const [isLoading, setIsLoading] = useState(false)
   const [errorMessages, setErrorMessages] = useState<string[]>([])
 
@@ -35,11 +33,6 @@ export default function SignInPage() {
     defaultValues: { email: '', password: '' },
     mode: 'onChange',
   })
-
-  // すでにログイン済みならトップへ
-  useEffect(() => {
-    if (currentUser) router.replace('/mypage')
-  }, [currentUser, router])
 
   //送信処理
   const onSubmit: SubmitHandler<SignInFormData> = async (data) => {
@@ -136,6 +129,7 @@ export default function SignInPage() {
             type="submit"
             variant="contained"
             loading={isLoading}
+            loadingIndicator="ログイン中…"
             fullWidth
             disabled={!isValid || isLoading}
           >
