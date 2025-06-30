@@ -27,23 +27,23 @@ interface CardFormModalProps {
   }) => Promise<void>
 }
 
-const style = {
+const modalStyle = {
   position: 'absolute' as const,
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 350,
+  width: { xs: '90%', sm: 350 },
   bgcolor: 'background.paper',
   boxShadow: 24,
-  p: 4,
   borderRadius: 4,
+  overflow: 'hidden',
 }
 
 export default function CardFormModal({
   open,
   initialData = {
     content: '',
-    logged_date: new Date().toLocaleDateString('sv-SE'), //YYYY-MM-DD形式
+    logged_date: new Date().toLocaleDateString('sv-SE'),
   },
   onClose,
   onCreate,
@@ -54,7 +54,6 @@ export default function CardFormModal({
   const [saving, setSaving] = useState(false)
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false)
 
-  //保存ボタンを押したときの処理
   const handleSave = async () => {
     setSaving(true)
     setErrors([])
@@ -72,7 +71,6 @@ export default function CardFormModal({
     }
   }
 
-  // モーダルを閉じようとした（背景クリックやEsc含む）とき
   const handleRequestClose = () => {
     if (content === initialData.content) {
       onClose()
@@ -84,70 +82,85 @@ export default function CardFormModal({
   return (
     <>
       <Modal open={open} onClose={handleRequestClose}>
-        <Box sx={style}>
-          <Typography variant="h6" mb={2} textAlign="center">
-            {initialData.id != null ? '編集する' : 'ThanksCardを作成'}
-          </Typography>
-
-          {errors.map((err, i) => (
-            <Typography color="error" key={i}>
-              {err}
+        <Box sx={modalStyle}>
+          {/* ─── 見出し部分 ─── */}
+          <Box sx={{ bgcolor: 'secondary.light', py: 2, textAlign: 'center' }}>
+            <Typography variant="h6" color="text.primary">
+              {initialData.id != null ? '編集する' : 'ThanksCardを作成'}
             </Typography>
-          ))}
+          </Box>
 
-          <TextField
-            label="感謝内容"
-            placeholder="ありがとう"
-            multiline
-            rows={4}
-            fullWidth
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            helperText={
-              <span
-                style={{
-                  color: content.length > 140 ? 'red' : undefined,
-                }}
+          {/* ─── フォーム部分 ─── */}
+          <Box sx={{ px: 3, py: 2 }}>
+            {errors.map((err, i) => (
+              <Typography color="error" key={i} sx={{ mb: 1 }}>
+                {err}
+              </Typography>
+            ))}
+
+            <TextField
+              label="感謝内容"
+              placeholder="ありがとう"
+              multiline
+              rows={4}
+              fullWidth
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              helperText={`${content.length}/140`}
+              error={content.length > 140}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: 2,
+                  '& fieldset': { borderColor: 'secondary.main' },
+                  '&:hover fieldset': { borderColor: 'secondary.dark' },
+                  '&.Mui-focused fieldset': { borderColor: 'secondary.main' },
+                },
+                mb: 2,
+              }}
+            />
+
+            <TextField
+              label="記録日"
+              type="date"
+              fullWidth
+              value={loggedDate}
+              onChange={(e) => setLoggedDate(e.target.value)}
+              InputLabelProps={{ shrink: true }}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: 2,
+                  '& fieldset': { borderColor: 'secondary.main' },
+                  '&:hover fieldset': { borderColor: 'secondary.dark' },
+                  '&.Mui-focused fieldset': { borderColor: 'secondary.main' },
+                },
+                mb: 3,
+              }}
+            />
+
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <Button
+                onClick={handleRequestClose}
+                disabled={saving}
+                sx={{ mr: 1 }}
               >
-                {content.length}/140
-              </span>
-            }
-            sx={{ mt: 2 }}
-          />
-
-          <TextField
-            label="記録日"
-            type="date"
-            fullWidth
-            value={loggedDate}
-            onChange={(e) => setLoggedDate(e.target.value)}
-            sx={{ mt: 2 }}
-            InputLabelProps={{ shrink: true }}
-          />
-
-          <Box mt={3} display="flex" justifyContent="flex-end">
-            {/* キャンセル */}
-            <Button
-              onClick={handleRequestClose}
-              disabled={saving}
-              sx={{ mr: 1 }}
-            >
-              キャンセル
-            </Button>
-
-            {/* 保存 */}
-            <Button
-              variant="contained"
-              onClick={handleSave}
-              disabled={saving || content.length === 0 || content.length > 140}
-            >
-              {saving ? '保存中...' : '保存する'}
-            </Button>
+                キャンセル
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleSave}
+                disabled={
+                  saving || content.length === 0 || content.length > 140
+                }
+              >
+                {saving ? '保存中...' : '保存する'}
+              </Button>
+            </Box>
           </Box>
         </Box>
       </Modal>
 
-      {/* キャンセル確認ダイヤログ */}
+      {/* キャンセル確認ダイアログ */}
       <Dialog
         open={isCancelDialogOpen}
         onClose={() => setIsCancelDialogOpen(false)}
