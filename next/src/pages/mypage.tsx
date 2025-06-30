@@ -66,66 +66,93 @@ export default function Mypage() {
 
   return (
     <Layout>
-      {/* 残り作成数の表示 */}
-      <Typography fontWeight="fontWeightBold" variant="h6">
-        {remaining > 0
-          ? `【今日の残り作成数】あと ${remaining}件`
-          : '今日の投稿は上限に達しました'}
-      </Typography>
+      <Box sx={{ pb: { xs: 10, sm: 0 } }}>
+        {/* 残り作成数の表示 */}
+        <Typography
+          variant="subtitle1"
+          sx={{ fontWeight: 600, mt: 2, mb: 1, textAlign: 'center' }}
+        >
+          {remaining > 0
+            ? `【今日の残り作成数】あと ${remaining}件`
+            : '今日の投稿は上限に達しました'}
+        </Typography>
 
-      {/* ThanksCard作成ボタン */}
-      <Button
-        variant="outlined"
-        sx={{
-          mt: 5,
-          width: 300,
-          mx: 'auto',
-          display: 'block',
-          textTransform: 'none',
-        }}
-        onClick={() => setModalOpen(true)}
-      >
-        ThanksCardを作成する
-      </Button>
+        {/* ThanksCard作成ボタン */}
+        <Button
+          variant="contained"
+          color="secondary"
+          sx={{
+            mt: 2,
+            width: { xs: '100%', sm: 400 },
+            mx: 'auto',
+            display: 'block',
+            textTransform: 'none',
+            textAlign: 'center',
+            borderRadius: 3,
+            borderWidth: '2px',
+            borderStyle: 'solid',
+            borderColor: 'primary.main',
+            py: 2,
+            fontSize: '1.2rem',
+            fontWeight: 600,
+          }}
+          onClick={() => setModalOpen(true)}
+        >
+          ThanksCardを作成する
+        </Button>
 
-      {/* 今日のカード一覧 */}
-      <CardList cards={cards} />
+        {/* 今日のカード一覧 */}
+        <CardList cards={cards} />
 
-      <Typography variant="h6" mt={4} mb={2}>
-        最近のThanksCard
-      </Typography>
+        {/* 見出し */}
+        <Typography
+          variant="subtitle1"
+          fontWeight="fontWeightMedium"
+          sx={{ fontWeight: 600, mt: 4, mb: 2, textAlign: 'center' }}
+        >
+          貯まったThanksCardを確認！
+        </Typography>
 
-      {/* ThanksDeck移動ボタン */}
-      <Button
-        variant="outlined"
-        sx={{
-          mt: 5,
-          width: 300,
-          mx: 'auto',
-          display: 'block',
-          textTransform: 'none',
-        }}
-        onClick={() => router.push('/cards')}
-      >
-        ThanksDeckを確認する
-      </Button>
+        {/* ThanksDeck移動ボタン */}
+        <Button
+          variant="outlined"
+          sx={{
+            mt: 1,
+            width: { xs: '100%', sm: 400 },
+            mx: 'auto',
+            display: 'block',
+            textTransform: 'none',
+            textAlign: 'center',
+            borderRadius: 3,
+            borderWidth: '2px',
+            borderStyle: 'solid',
+            borderColor: 'primary.main',
+            py: 1.5,
+            fontSize: '1.1rem',
+            fontWeight: 500,
+          }}
+          onClick={() => router.push('/cards')}
+        >
+          ThanksDeckを確認する
+        </Button>
 
-      {/* モーダルを閉じたときに内容を残さない */}
-      {modalOpen && (
-        <CardFormModal
-          open={modalOpen}
-          onClose={() => setModalOpen(false)}
-          onCreate={handleCreate}
-        />
-      )}
+        {/* モーダルを閉じたときに内容を残さない */}
+        {modalOpen && (
+          <CardFormModal
+            open={modalOpen}
+            onClose={() => setModalOpen(false)}
+            onCreate={handleCreate}
+          />
+        )}
 
-      <Fab
-        color="primary"
-        sx={{ position: 'fixed', bottom: 24, right: 24 }}
-        onClick={() => setModalOpen(true)}
-      >
-        <AddIcon />
-      </Fab>
+        <Fab
+          color="primary"
+          sx={{ position: 'fixed', bottom: 24, right: 24 }}
+          onClick={() => setModalOpen(true)}
+        >
+          <AddIcon />
+        </Fab>
+      </Box>
     </Layout>
   )
 }

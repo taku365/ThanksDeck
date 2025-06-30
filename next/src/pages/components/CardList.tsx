@@ -1,4 +1,36 @@
-import { Grid, Typography } from '@mui/material'
+// import { Grid, Typography } from '@mui/material'
+// import CardItem from './CardItem'
+
+// interface CardListProps {
+//   cards: Array<{
+//     id: number
+//     content: string
+//     logged_date: string
+//   }>
+// }
+
+// export default function CardList({ cards }: CardListProps) {
+//   if (!cards || cards.length === 0) {
+//     return (
+//       <Typography textAlign="center" sx={{ mt: 5 }}>
+//         今日のThanksCardを作成しよう!
+//       </Typography>
+//     )
+//   }
+
+//   return (
+//     <Grid container spacing={2} sx={{ mt: 1 }}>
+//       {cards.map((card) => (
+//         <Grid item key={card.id} xs={12} sm={4}>
+//           <CardItem {...card} />
+//         </Grid>
+//       ))}
+//     </Grid>
+//   )
+// }
+
+// CardList.tsx
+import { Grid, Typography, Box } from '@mui/material'
 import CardItem from './CardItem'
 
 interface CardListProps {
@@ -10,21 +42,42 @@ interface CardListProps {
 }
 
 export default function CardList({ cards }: CardListProps) {
-  if (!cards || cards.length === 0) {
-    return (
-      <Typography textAlign="center" sx={{ mt: 5 }}>
-        ThanksCardを作成しよう!
-      </Typography>
-    )
-  }
-
   return (
-    <Grid container spacing={2} sx={{ mt: 1 }}>
-      {cards.map((card) => (
-        <Grid item key={card.id} xs={4} sm={12}>
-          <CardItem {...card} />
+    <Grid
+      container
+      spacing={2}
+      sx={{ mt: 1 }}
+      justifyContent={cards && cards.length === 0 ? 'center' : 'flex-start'}
+    >
+      {cards && cards.length > 0 ? (
+        cards.map((card) => (
+          <Grid item key={card.id} xs={12} sm={4}>
+            <CardItem {...card} />
+          </Grid>
+        ))
+      ) : (
+        <Grid item xs={12} sm={4}>
+          <Box
+            sx={{
+              minHeight: '160px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              border: '2px dashed',
+              borderColor: 'divider',
+              borderRadius: 2,
+              bgcolor: 'background.paper',
+              p: 2,
+            }}
+          >
+            <Typography align="center" color="text.secondary">
+              今日のThanksCardを
+              <br />
+              作成しよう！
+            </Typography>
+          </Box>
         </Grid>
-      ))}
+      )}
     </Grid>
   )
 }
