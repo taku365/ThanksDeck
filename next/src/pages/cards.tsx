@@ -1,4 +1,5 @@
 import AddIcon from '@mui/icons-material/Add'
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import { Fab, CircularProgress, Typography, Box, Button } from '@mui/material'
 import dayjs from 'dayjs'
 import dynamic from 'next/dynamic'
@@ -63,15 +64,20 @@ export default function MonthlyDeckPage() {
   if (!cards && !error) return <CircularProgress />
   if (error) return <p>取得エラー</p>
 
-  const goToDashboard = () => {
+  const goToMypage = () => {
     router.push('/mypage')
   }
 
   return (
     <Layout>
-      <Box sx={{ mb: 2 }}>
-        <Button variant="outlined" onClick={goToDashboard}>
-          ダッシュボードに戻る
+      {/* 戻るボタン */}
+      <Box sx={{ p: 2 }}>
+        <Button
+          startIcon={<ArrowBackIosIcon />}
+          size="small"
+          onClick={goToMypage}
+        >
+          戻る
         </Button>
       </Box>
 

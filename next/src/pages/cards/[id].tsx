@@ -1,4 +1,5 @@
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
+import DeleteIcon from '@mui/icons-material/Delete'
 import XIcon from '@mui/icons-material/X'
 import {
   Box,
@@ -33,30 +34,26 @@ export default function CardDetailPage() {
     error,
     mutate,
   } = useSWR(id ? `/cards/${id}` : null, fetcher)
-
   const { currentUser, isLoading } = useCurrentUser()
   const [isEditOpen, setIsEditOpen] = useState(false)
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
 
-  //  認証ガード
+  // 認証ガード
   useEffect(() => {
     if (!isLoading && !currentUser) {
       router.replace('/signin')
     }
   }, [isLoading, currentUser, router])
 
-  if (isLoading) return <CircularProgress />
-  if (!currentUser) return null
-
-  // ローディング & エラー(カード取得)
-  if (!card && !error) {
+  // ローディング／エラー時
+  if (isLoading || (!card && !error))
     return (
       <Layout>
         <CircularProgress />
       </Layout>
     )
-  }
-  if (error) {
+  if (!currentUser) return null
+  if (error)
     return (
       <Layout>
         <Typography color="error" align="center" sx={{ mt: 4 }}>
@@ -64,117 +61,166 @@ export default function CardDetailPage() {
         </Typography>
       </Layout>
     )
-  }
 
-  // 前の画面に戻る
-  const pageBack = () => {
-    router.back()
-  }
+  // 戻る処理
+  const handleBack = () => router.back()
 
-  //削除処理
+  // 削除処理
   const handleDelete = async () => {
     await api.delete(`/cards/${card.id}`)
     router.back()
   }
 
-  //Xシェア
-  const XText = encodeURIComponent(card.content)
-  const shareUrl = `https://twitter.com/intent/tweet?text=${XText}&hashtags=ThanksDeck`
+  // Xシェア用URL
+  const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+    card.content,
+  )}&hashtags=ThanksDeck`
 
   return (
     <Layout>
-      <Box sx={{ mb: 2 }}>
-        <Button startIcon={<ArrowBackIosIcon />} onClick={pageBack}>
+      {/* 戻るボタン */}
+      <Box sx={{ p: 2 }}>
+        <Button
+          startIcon={<ArrowBackIosIcon />}
+          size="small"
+          onClick={handleBack}
+        >
           戻る
         </Button>
       </Box>
 
-      <Container sx={{ p: 2 }} maxWidth="md">
-        {/* 日付 と Xアイコン */}
+      {/* カード本体 */}
+      <Container maxWidth="sm" sx={{ p: 2 }}>
         <Box
           sx={{
-            mt: 2,
-            display: 'flex',
-            alineItems: 'center',
-            justifyContent: 'space-between',
+            position: 'relative',
+            bgcolor: '#e6f8fb',
+            borderRadius: 3,
+            p: 2,
+            pb: 8,
+            boxShadow: 3,
           }}
         >
-          {/* 記録日 */}
-          <Typography variant="caption" color="text.secondary" gutterBottom>
-            {dayjs(card.logged_date).format('YYYY年M月D日')}
-          </Typography>
+          {/* 日付・Xアイコン */}
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Typography variant="caption" color="text.secondary">
+              {dayjs(card.logged_date).format('YYYY年M月D日')}
+            </Typography>
+            <Tooltip title="Xにシェア">
+              <IconButton
+                size="small"
+                component="a"
+                href={shareUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <XIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+          </Box>
 
-          {/* X シェア */}
-          <Tooltip title="Xに投稿する">
-            <IconButton
-              component="a"
-              href={shareUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="カードをXでシェア"
+          {/* 感謝内容エリア */}
+          <Box
+            sx={{
+              mt: 2,
+              p: 2,
+              bgcolor: '#fff',
+              borderRadius: 2,
+              minHeight: '140px',
+            }}
+          >
+            <Typography
+              variant="body1"
+              sx={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
             >
-              <XIcon />
-            </IconButton>
-          </Tooltip>
-        </Box>
+              {card.content}
+            </Typography>
+          </Box>
 
-        {/* カード内容 */}
-        <Typography
-          variant="body1"
-          sx={{ whiteSpace: 'pre-wrap', mt: 2, mb: 3 }}
-        >
-          {card.content}
-        </Typography>
-
-        {/* 編集・削除ボタン */}
-        <Box sx={{ mt: 2, display: 'flex', gap: 1 }}>
-          <Button
-            variant="contained"
-            size="small"
-            onClick={() => setIsEditOpen(true)}
+          {/* チャッピー返信エリア */}
+          <Box
+            sx={{
+              mt: 2,
+              p: 2,
+              bgcolor: '#FFFDE7',
+              borderRadius: 2,
+              minHeight: '140px',
+            }}
           >
-            編集
-          </Button>
-          <Button
-            variant="outlined"
+            <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+              🤖 チャッピー の返信
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
+            >
+              {card.reply ?? '返信準備中…'}
+            </Typography>
+          </Box>
+
+          {/* 削除アイコン */}
+          <IconButton
             size="small"
-            color="error"
             onClick={() => setIsDeleteDialogOpen(true)}
+            sx={{ position: 'absolute', bottom: 16, left: 16 }}
           >
-            削除
-          </Button>
-        </Box>
+            <DeleteIcon fontSize="small" />
+          </IconButton>
 
-        {/* 編集モーダル */}
-        {isEditOpen && (
-          <CardFormModal
-            open={isEditOpen}
-            onClose={() => setIsEditOpen(false)}
-            initialData={{
-              id: card.id,
-              content: card.content,
-              logged_date: card.logged_date,
+          {/* 編集ボタン */}
+          <Box
+            sx={{
+              position: 'absolute',
+              bottom: 12,
+              right: 12,
             }}
-            onCreate={async (updated) => {
-              await api.patch(`/cards/${card.id}`, { card: updated })
-              await mutate()
-              setIsEditOpen(false)
-            }}
-          />
-        )}
+          >
+            <Button
+              variant="contained"
+              size="small"
+              onClick={() => setIsEditOpen(true)}
+            >
+              編集
+            </Button>
+          </Box>
+        </Box>
       </Container>
 
-      {/* 削除確認ダイヤログ */}
+      {/* 編集モーダル */}
+      {isEditOpen && (
+        <CardFormModal
+          open={isEditOpen}
+          onClose={() => setIsEditOpen(false)}
+          initialData={{
+            id: card.id,
+            content: card.content,
+            logged_date: card.logged_date,
+          }}
+          onCreate={async (updated) => {
+            await api.patch(`/cards/${card.id}`, { card: updated })
+            await mutate()
+            setIsEditOpen(false)
+          }}
+        />
+      )}
+
+      {/* 削除確認ダイアログ */}
       <Dialog
         open={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
       >
-        <DialogTitle>ThanksCardが破棄されます</DialogTitle>
-        <DialogContent>本当に削除しますか？</DialogContent>
+        <DialogTitle>ThanksCardを削除します</DialogTitle>
+        <DialogContent>本当に削除してよいですか？</DialogContent>
         <DialogActions>
           <Button onClick={() => setIsDeleteDialogOpen(false)}>いいえ</Button>
           <Button color="error" onClick={handleDelete}>
-            はい、削除します
+            はい、削除
           </Button>
         </DialogActions>
       </Dialog>
