@@ -215,7 +215,9 @@ export default function CardDetailPage() {
         open={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
       >
-        <DialogTitle>ThanksCardを削除します</DialogTitle>
+        <DialogTitle sx={{ fontWeight: 700, p: 3 }}>
+          ThanksCardを削除します
+        </DialogTitle>
         <DialogContent>本当に削除してよいですか？</DialogContent>
         <DialogActions>
           <Button onClick={() => setIsDeleteDialogOpen(false)}>いいえ</Button>

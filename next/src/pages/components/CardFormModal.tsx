@@ -165,7 +165,9 @@ export default function CardFormModal({
         open={isCancelDialogOpen}
         onClose={() => setIsCancelDialogOpen(false)}
       >
-        <DialogTitle>編集中の内容が破棄されます</DialogTitle>
+        <DialogTitle sx={{ fontWeight: 700, p: 3 }}>
+          編集中の内容が破棄されます
+        </DialogTitle>
         <DialogContent>
           内容が保存されません。キャンセルしてもよろしいですか？
         </DialogContent>

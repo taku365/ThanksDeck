@@ -43,6 +43,9 @@ export default function MonthlyDeckPage() {
   const currentMonth = Number(router.query.month ?? today.month() + 1)
 
   const [page, setPage] = useState(1)
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value)
+  }
   useEffect(() => {
     setPage(1)
   }, [perPage])
@@ -142,7 +145,7 @@ export default function MonthlyDeckPage() {
           <Pagination
             count={meta.total_pages}
             page={page}
-            onChange={(_e, value) => setPage(value)}
+            onChange={handleChange}
             color="primary"
           />
         </Box>

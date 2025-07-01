@@ -83,7 +83,8 @@ export default function Mypage() {
           color="secondary"
           sx={{
             mt: 2,
-            width: { xs: '100%', sm: 400 },
+            width: '100%',
+            maxWidth: 400,
             mx: 'auto',
             display: 'block',
             textTransform: 'none',
@@ -118,7 +119,8 @@ export default function Mypage() {
           variant="outlined"
           sx={{
             mt: 1,
-            width: { xs: '100%', sm: 400 },
+            width: '100%',
+            maxWidth: 400,
             mx: 'auto',
             display: 'block',
             textTransform: 'none',
