@@ -7,7 +7,7 @@ interface CalendarMiniProps {
   markedDates: string[] // 'YYYY-MM-DD' の配列
   selectedDate: string | null //現在選択中の日付 or null
   onChangeMonth: (y: number, m: number) => void
-  setSelectDate: (date: string) => void
+  setSelectDate: (date: string | null) => void
 }
 
 export default function CalendarMini({
@@ -32,8 +32,12 @@ export default function CalendarMini({
         onChangeMonth(newDate.year(), newDate.month() + 1)
       }
       onChange={(newDate) => {
-        if (newDate) {
-          setSelectDate(newDate.format('YYYY-MM-DD'))
+        if (!newDate) return
+        const DateString = newDate.format('YYYY-MM-DD')
+        if (DateString === selectedDate) {
+          setSelectDate(null)
+        } else {
+          setSelectDate(DateString)
         }
       }}
       views={['day']}
