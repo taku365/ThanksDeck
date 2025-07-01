@@ -89,7 +89,7 @@ export default function ThanksCard({
 
         {/* 記録日 */}
         <Typography variant="caption" color="text.secondary">
-          {dayjs(logged_date).format('YYYY‑MM‑DD')}
+          {dayjs(logged_date).format('YYYY年M月D日')}
         </Typography>
 
         {/* ───────── 感謝内容エリア ───────── */}
@@ -99,7 +99,8 @@ export default function ThanksCard({
             p: 2,
             borderRadius: 2,
             border: '2px solid #FFEB3B',
-            minHeight: '160px',
+            height: 140,
+            overflow: 'auto',
           }}
         >
           <Typography
