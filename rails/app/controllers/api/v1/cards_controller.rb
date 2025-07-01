@@ -22,8 +22,17 @@ class Api::V1::CardsController < Api::V1::BaseController
     first_day = Date.new(year, month, 1)
     last_day = first_day.end_of_month
 
-    cards = current_user.cards.where(logged_date: first_day..last_day).order(logged_date: :desc)
-    render json: serialize(cards), status: :ok
+    scope = current_user.cards.where(logged_date: first_day..last_day).order(logged_date: :desc)
+    cards = scope.page(params[:page]).per(params[:per] || 6)
+
+    render json: {
+      cards: serialize(cards),
+      meta: {
+        current_page: cards.current_page,
+        total_pages: cards.total_pages,
+        total_count: cards.total_count,
+      },
+    }, status: :ok
   rescue ArgumentError
     # Date.new の引数が不正だった場合
     render json: { errors: ["無効な年月です"] },

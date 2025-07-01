@@ -19,7 +19,7 @@ export default function CardList({ cards }: CardListProps) {
     >
       {cards && cards.length > 0 ? (
         cards.map((card) => (
-          <Grid item key={card.id} xs={12} sm={4}>
+          <Grid item key={card.id} xs={12} md={4}>
             <CardItem {...card} />
           </Grid>
         ))
