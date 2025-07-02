@@ -1,5 +1,5 @@
 import { Container, Alert, Button, Box, Typography } from '@mui/material'
-import { AxiosError, isAxiosError } from 'axios'
+import { isAxiosError } from 'axios'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import Layout from './components/Layout'
@@ -31,15 +31,11 @@ export default function ConfirmationPendingPage() {
         '確認メールを再送信しました。メールを確認してください。',
       )
     } catch (e) {
+      setFeedbackSeverity('error')
       if (isAxiosError(e)) {
-        const axiosError = e as AxiosError<{ message: string }>
-        setFeedbackSeverity('error')
-        setFeedbackMessage(
-          axiosError.response?.data?.message ||
-            '確認メールの再送信に失敗しました。再度お試しください',
-        )
+        const errs = e.response?.data?.errors
+        setFeedbackMessage(errs)
       } else {
-        setFeedbackSeverity('error')
         setFeedbackMessage('予期せぬエラーが発生しました')
       }
     } finally {
