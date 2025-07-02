@@ -45,11 +45,7 @@ export default function SignInPage() {
       console.log(e)
       if (isAxiosError(e)) {
         const errs = e.response?.data?.errors
-        if (Array.isArray(errs)) {
-          setErrorMessages(errs)
-        } else {
-          setErrorMessages(['メールアドレスまたはパスワードが違います'])
-        }
+        setErrorMessages(errs)
       } else {
         setErrorMessages(['ログインに失敗しました'])
       }
@@ -166,7 +162,7 @@ export default function SignInPage() {
                   textAlign: 'right',
                   cursor: 'pointer',
                 }}
-                onClick={() => router.push('/forgot-password')}
+                onClick={() => router.push('/forget-password')}
               >
                 パスワードをお忘れですか？
               </Typography>
