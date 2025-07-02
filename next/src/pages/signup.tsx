@@ -68,15 +68,10 @@ export default function SignUpPage() {
       )
     } catch (e) {
       if (isAxiosError(e)) {
-        console.log(e)
         const errs = e.response?.data?.errors.full_messages
-        if (Array.isArray(errs)) {
-          setErrorMessages(errs)
-        } else {
-          setErrorMessages(['メールアドレスまたはパスワードが違います'])
-        }
+        setErrorMessages(errs)
       } else {
-        setErrorMessages(['ログインに失敗しました'])
+        setErrorMessages(['登録に失敗しました'])
       }
     } finally {
       setIsLoading(false)
