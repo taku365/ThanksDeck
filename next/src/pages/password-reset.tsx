@@ -47,7 +47,6 @@ export default function PasswordResetPage() {
     uid,
   } = router.query as Record<string, string>
 
-  // トークンエラー状態
   const [tokenError, setTokenError] = useState(false)
   const [isSending, setIsSending] = useState(false)
   const [feedbackMessage, setFeedbackMessage] = useState('')
@@ -60,13 +59,13 @@ export default function PasswordResetPage() {
     mode: 'onChange',
   })
 
+  // 一時認証トークンの保存＆リンク有効判定
   useEffect(() => {
     if (!router.isReady) return
-    // 一時認証情報
+    // Rails がリダイレクト時に渡す認証ヘッダーを保存
     if (accessToken && client && uid) {
       setAuthTokens({ 'access-token': accessToken, client, uid })
     }
-    // 有効期限切れか判定
     setTokenError(!reset_password_token)
   }, [router.isReady, accessToken, client, uid, reset_password_token])
 
@@ -84,7 +83,6 @@ export default function PasswordResetPage() {
       const response = await api.put('/auth/password', {
         password,
         password_confirmation: passwordConfirmation,
-        reset_password_token,
       })
 
       setAuthTokens({
