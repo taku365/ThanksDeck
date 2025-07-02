@@ -36,11 +36,11 @@ export const useAuth = () => {
         password_confirmation: passwordConfirmation,
         confirm_success_url: confirmSuccessUrl,
       })
-      const h = response.headers
+
       setAuthTokens({
-        'access-token': String(h['access-token'] ?? ''),
-        client: String(h.client ?? ''),
-        uid: String(h.uid ?? ''),
+        'access-token': response.headers['access-token'] as string,
+        client: response.headers.client as string,
+        uid: response.headers.uid as string,
       })
       return response.data.data
     },
