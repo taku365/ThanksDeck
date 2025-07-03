@@ -1,9 +1,24 @@
-import { Box, Button, Stack, Typography } from '@mui/material'
+import { Alert, Box, Button, Stack, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useState } from 'react'
+import { useAuth } from '@/hooks/useAuth'
 
 export default function HeroSection() {
   const router = useRouter()
+  const { guestSignIn } = useAuth()
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+
+  const handleClick = async () => {
+    try {
+      await guestSignIn()
+      router.push({
+        pathname: '/mypage',
+        query: { notice: 'ゲストユーザーでログインしました' },
+      })
+    } catch {
+      setErrorMessage('ゲストログインに失敗しました')
+    }
+  }
 
   return (
     <Box
@@ -66,11 +81,23 @@ export default function HeroSection() {
               borderRadius: 3,
               py: 1.5,
             }}
+            onClick={handleClick}
           >
             ゲストで体験する
           </Button>
         </Stack>
       </Stack>
+
+      {/* ゲストログインエラーメッセージ */}
+      {errorMessage && (
+        <Alert
+          severity="error"
+          sx={{ mt: 4 }}
+          onClose={() => setErrorMessage(null)}
+        >
+          {errorMessage}
+        </Alert>
+      )}
     </Box>
   )
 }
