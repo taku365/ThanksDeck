@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getAuthTokens } from './tokenStorage'
+import { getAuthTokens, setAuthTokens } from './tokenStorage'
 
 // 共通ベースURL・ヘッダー付きの Axios インスタンスを作成
 export const api = axios.create({
@@ -20,6 +20,19 @@ api.interceptors.request.use((config) => {
     config.headers.uid = tokens.uid
   }
   return config
+})
+
+// レスポンス時にトークン更新分を自動保存
+api.interceptors.response.use((response) => {
+  const h = response.headers
+  if (h['access-token'] && h.client && h.uid) {
+    setAuthTokens({
+      'access-token': String(h['access-token'] ?? ''),
+      client: String(h.client ?? ''),
+      uid: String(h.uid ?? ''),
+    })
+  }
+  return response
 })
 
 // GET→data 抜き出しのラッパー

@@ -1,5 +1,13 @@
 import AddIcon from '@mui/icons-material/Add'
-import { Box, Button, CircularProgress, Fab, Typography } from '@mui/material'
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Fab,
+  Typography,
+  Alert,
+  Snackbar,
+} from '@mui/material'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import useSWR from 'swr'
@@ -13,6 +21,19 @@ export default function Mypage() {
   const router = useRouter()
   const [modalOpen, setModalOpen] = useState(false)
   const { currentUser, isLoading } = useCurrentUser()
+
+  //ゲストログイン通知
+  const { notice } = router.query
+  const [message, setMessage] = useState<string | null>(null)
+  const [open, setOpen] = useState(false)
+
+  useEffect(() => {
+    if (typeof notice === 'string') {
+      setMessage(notice)
+      setOpen(true)
+      router.replace('/mypage', undefined, { shallow: true }) // クエリを URL から消す
+    }
+  }, [notice, router])
 
   //今日のカード一覧を取得
   const { data: cards, mutate, error } = useSWR('/cards/today', fetcher)
@@ -66,6 +87,17 @@ export default function Mypage() {
 
   return (
     <Layout>
+      {/* ゲストユーザーログイン通知 */}
+      <Snackbar
+        open={open}
+        autoHideDuration={3000}
+        onClose={() => setOpen(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert severity="success">{message}</Alert>
+      </Snackbar>
+
+      {/* ----------本体---------- */}
       <Box sx={{ pb: { xs: 10, sm: 0 } }}>
         {/* 残り作成数の表示 */}
         <Typography
