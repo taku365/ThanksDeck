@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { api } from '../utils/api'
-import { setAuthTokens, clearAuthTokens } from '../utils/tokenStorage'
+import { clearAuthTokens } from '../utils/tokenStorage'
 import { useCurrentUser } from './useCurrentUser'
 
 export const useAuth = () => {
@@ -9,12 +9,6 @@ export const useAuth = () => {
   const signIn = useCallback(
     async (email: string, password: string) => {
       const response = await api.post('/auth/sign_in', { email, password })
-      const h = response.headers
-      setAuthTokens({
-        'access-token': String(h['access-token'] ?? ''),
-        client: String(h.client ?? ''),
-        uid: String(h.uid ?? ''),
-      })
       await refresh()
       return response.data.data
     },
@@ -36,12 +30,6 @@ export const useAuth = () => {
         password_confirmation: passwordConfirmation,
         confirm_success_url: confirmSuccessUrl,
       })
-
-      setAuthTokens({
-        'access-token': response.headers['access-token'] as string,
-        client: response.headers.client as string,
-        uid: response.headers.uid as string,
-      })
       return response.data.data
     },
     [],
@@ -53,5 +41,11 @@ export const useAuth = () => {
     await refresh(undefined, { revalidate: false })
   }, [refresh])
 
-  return { signIn, signUp, signOut }
+  const guestSignIn = useCallback(async () => {
+    const res = await api.post('/auth/guest_sign_in')
+    await refresh()
+    return res.data.data
+  }, [refresh])
+
+  return { signIn, signUp, signOut, guestSignIn }
 }
