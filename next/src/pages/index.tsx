@@ -1,20 +1,17 @@
-import type { NextPage } from 'next'
-import useSWR from 'swr'
-import { fetcher } from '@/utils'
+import React from 'react'
+import Layout from './components/Layout'
+import FeatureSection from './components/index/FeatureSection'
+import FooterLinks from './components/index/FooterLinks'
+import HeroSection from './components/index/HeroSection'
 
-const Index: NextPage = () => {
-  const url = 'http://localhost:3000/api/v1/health_check'
-  const { data, error } = useSWR(url, fetcher)
-
-  if (error) return <div>An error has occurred.</div>
-  if (!data) return <div>Loading...</div>
-
+export default function PublicThanksDeck() {
   return (
     <>
-      <div>Rails疎通確認</div>
-      <div>レスポンスメッセージ: {data.message}</div>
+      <Layout>
+        <HeroSection />
+        <FeatureSection />
+        <FooterLinks />
+      </Layout>
     </>
   )
 }
-
-export default Index

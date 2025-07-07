@@ -10,19 +10,27 @@ import Document, {
 } from 'next/document'
 import * as React from 'react'
 
-import createEmotionCache from '@/styles/createEmotionCache'
 import theme from '@/styles/theme'
+import createEmotionCache from '@/utils/createEmotionCache'
 
 export default class MyDocument extends Document {
   render(): JSX.Element {
     return (
-      <Html lang="ja">
+      <Html lang="ja" prefix="og: http://ogp.me/ns#">
         <Head>
+          <meta
+            name="google-site-verification"
+            content="27yqB9Nl4liDte_D7fFL--8BWOZw6ufQGXohbZJOqGw"
+          />
           {/* PWA primary color */}
           <meta name="theme-color" content={theme.palette.primary.main} />
           <link
             rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700&display=swap"
+          />
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap"
           />
         </Head>
         <body>
