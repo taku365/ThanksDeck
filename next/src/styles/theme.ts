@@ -1,18 +1,35 @@
-import { createTheme } from '@mui/material'
+import { createTheme } from '@mui/material/styles'
 
 const theme = createTheme({
-  // typography: {
-  //   fontFamily: 'Noto Sans JP, Roboto, "Helvetica Neue", Arial, sans-serif',
-  // },
   palette: {
+    background: {
+      default: '#FFF9D6',
+    },
+    text: {
+      primary: '#0A1930',
+    },
     primary: {
-      main: '#FDF7E8',
+      main: '#0A1930',
     },
     secondary: {
-      main: '#FBBF23',
+      main: '#FF9900',
     },
-    error: {
-      main: '#E63946',
+  },
+  typography: {
+    fontFamily: '"Not Sans JP", "Roboto", "Helvetica", "Arial", sans-serif',
+    fontWeightRegular: 400,
+    fontWeightMedium: 500,
+    fontWeightBold: 700,
+  },
+  components: {
+    MuiCircularProgress: {
+      defaultProps: {
+        sx: {
+          display: 'block',
+          mx: 'auto',
+          mt: 4,
+        },
+      },
     },
   },
 })

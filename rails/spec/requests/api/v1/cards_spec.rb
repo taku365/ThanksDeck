@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "Api::V1::Cards", type: :request do
   let(:user)   { create(:user, confirmed_at: Time.current) }
-  # createテストで新規作成ができなくなってしまうため、昨日作成した3件分のレコードオブジェクトを要素に持つ配列に設定
+  # 昨日のカードを３件作成(createテストで新規作成ができなくなってしまうため)
   let!(:cards) { create_list(:card, 3, user: user, logged_date: Date.yesterday) }
 
   # index
@@ -22,6 +22,106 @@ RSpec.describe "Api::V1::Cards", type: :request do
     context "認証なし" do
       it "401 Unauthorized が返る" do
         get "/api/v1/cards"
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+  end
+
+  # today
+  describe "GET /api/v1/cards/today" do
+    let!(:today_card) { create(:card, user: user, logged_date: Date.current) }
+
+    context "認証あり" do
+      let(:headers) { auth_headers_for(user).merge("Content-Type" => "application/json") }
+
+      it "200 が返り、今日の日付のカードだけが返ってくる" do
+        get "/api/v1/cards/today", headers: headers
+        expect(response).to have_http_status(:ok)
+        json = JSON.parse(response.body)
+        expect(json.size).to eq 1
+        expect(json.first["id"]).to eq today_card.id
+        expect(json.first["content"]).to eq today_card.content
+        expect(json.first["logged_date"]).to eq today_card.logged_date.to_s
+      end
+    end
+
+    context "認証なし" do
+      it "402 Unauthorized が返る" do
+        get "/api/v1/cards/today"
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+  end
+
+  # deck
+  describe "GET /api/v1/cards/deck/:year/:month" do
+    before do
+      Card.delete_all
+      this_month_card_a
+      this_month_card_b
+      last_month_card
+    end
+
+    # ---- テストデータ -------------------------------------------------------
+    let(:this_month_card_a) do
+      create(:card, user: user,
+                    logged_date: Date.current.beginning_of_month + 5.days)
+    end
+    let(:this_month_card_b) do
+      create(:card, user: user,
+                    logged_date: Date.current.beginning_of_month + 10.days)
+    end
+    # フィルタ対象外
+    let(:last_month_card) do
+      create(:card, user: user,
+                    logged_date: (Date.current - 1.month).beginning_of_month + 3.days)
+    end
+
+    let(:year)  { Date.current.year.to_s }
+    let(:month) { Date.current.month.to_s }
+
+    context "認証あり" do
+      let(:headers) { auth_headers_for(user).merge("Content-Type" => "application/json") }
+
+      it "200 が返り、指定月のカードだけが返る & メタ情報を含む" do
+        get "/api/v1/cards/deck/#{year}/#{month}", headers: headers
+
+        expect(response).to have_http_status(:ok)
+        json = JSON.parse(response.body)
+
+        expect(json).to have_key("cards")
+        expect(json).to have_key("meta")
+
+        card_ids = json["cards"].map {|c| c["id"] }
+        expect(card_ids).to contain_exactly(this_month_card_a.id, this_month_card_b.id)
+
+        # データの中身チェック
+        card_a = json["cards"].find {|c| c["id"] == this_month_card_a.id }
+        expect(card_a["content"]).to     eq this_month_card_a.content
+        expect(card_a["logged_date"]).to eq this_month_card_a.logged_date.to_s
+
+        expect(json["meta"]).to include("current_page" => 1, "total_pages" => 1, "total_count" => 2)
+      end
+
+      it "ページネーションパラメータを指定すると件数が絞られる" do
+        # per=1 で 1 件ずつ取得
+        get "/api/v1/cards/deck/#{year}/#{month}",
+            params: { page: 1, per: 1 },
+            headers: headers
+
+        json = JSON.parse(response.body)
+        expect(json["cards"].size).to eq 1
+        expect(json["meta"]).to include(
+          "current_page" => 1,
+          "total_pages" => 2,
+          "total_count" => 2,
+        )
+      end
+    end
+
+    context "認証なし" do
+      it "401 Unauthorized が返る" do
+        get "/api/v1/cards/deck/#{year}/#{month}"
         expect(response).to have_http_status(:unauthorized)
       end
     end
@@ -83,7 +183,7 @@ RSpec.describe "Api::V1::Cards", type: :request do
 
         expect(response).to have_http_status(:unprocessable_entity)
         json = JSON.parse(response.body)
-        expect(json["errors"]).to include("今日のカードは上限に達しました")
+        expect(json["errors"]).to include("この日のカードは上限に達しました")
       end
     end
 
