@@ -1,4 +1,3 @@
-import GoogleIcon from '@mui/icons-material/Google'
 import { LoadingButton } from '@mui/lab'
 import {
   Box,
@@ -7,8 +6,6 @@ import {
   Stack,
   TextField,
   Alert,
-  Divider,
-  Button,
 } from '@mui/material'
 import { isAxiosError } from 'axios'
 import { useRouter } from 'next/router'
@@ -186,39 +183,6 @@ export default function SignInPage() {
               >
                 ログイン
               </LoadingButton>
-
-              {/* ── or 区切り線 */}
-              <Box sx={{ display: 'flex', alignItems: 'center', my: 2 }}>
-                <Divider sx={{ flexGrow: 1 }} />
-                <Typography
-                  variant="body2"
-                  sx={{ mx: 2, color: 'text.secondary' }}
-                >
-                  または
-                </Typography>
-                <Divider sx={{ flexGrow: 1 }} />
-              </Box>
-
-              {/* Google ログイン */}
-              <Button
-                variant="outlined"
-                fullWidth
-                startIcon={<GoogleIcon />}
-                sx={{
-                  textTransform: 'none',
-                  borderRadius: 2,
-                  borderColor: 'grey.400',
-                  bgcolor: 'white',
-                  '&:hover': {
-                    bgcolor: 'grey.100',
-                  },
-                }}
-                onClick={() => {
-                  router.push('/auth/google')
-                }}
-              >
-                Googleでログイン
-              </Button>
 
               {/* 新規登録誘導 */}
               <Typography variant="body2" align="center" sx={{ mt: 3 }}>
