@@ -67,9 +67,7 @@ export default function Mypage() {
   if (!cards && !error) {
     return (
       <Layout>
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-          <CircularProgress />
-        </Box>
+        <CircularProgress />
       </Layout>
     )
   }

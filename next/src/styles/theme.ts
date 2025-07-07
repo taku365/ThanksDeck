@@ -21,6 +21,17 @@ const theme = createTheme({
     fontWeightMedium: 500,
     fontWeightBold: 700,
   },
+  components: {
+    MuiCircularProgress: {
+      defaultProps: {
+        sx: {
+          display: 'block',
+          mx: 'auto',
+          mt: 4,
+        },
+      },
+    },
+  },
 })
 
 export default theme
