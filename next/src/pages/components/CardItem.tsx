@@ -1,33 +1,3 @@
-// import { Card, CardContent, Typography } from '@mui/material'
-// import { useRouter } from 'next/router'
-
-// interface CardItemProps {
-//   id: number
-//   content: string
-//   logged_date: string
-// }
-
-// export default function CardItem({ id, content, logged_date }: CardItemProps) {
-//   const router = useRouter()
-
-//   return (
-//     <Card
-//       onClick={() => router.push(`/cards/${id}`)}
-//       sx={{ cursor: 'pointer' }}
-//     >
-//       <CardContent>
-//         <Typography variant="subtitle2" gutterBottom>
-//           {logged_date}
-//         </Typography>
-//         <Typography variant="body2" noWrap>
-//           {content}
-//         </Typography>
-//       </CardContent>
-//     </Card>
-//   )
-// }
-
-// ThanksCard.tsx
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import {
   Card,
@@ -37,25 +7,21 @@ import {
   Divider,
   Paper,
   IconButton,
+  Chip,
+  CircularProgress,
 } from '@mui/material'
 import Tooltip from '@mui/material/Tooltip'
 import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
 import React from 'react'
+import { ThanksCard } from '../../../types/thanks-card'
 
-interface ThanksCardProps {
-  id: number
-  logged_date: string
-  content: string
-  reply?: string
-}
-
-export default function ThanksCard({
+export default function CardItem({
   id,
   logged_date,
   content,
   reply,
-}: ThanksCardProps) {
+}: ThanksCard) {
   const router = useRouter()
 
   return (
@@ -125,22 +91,26 @@ export default function ThanksCard({
           >
             🤖 チャッピー の返信
           </Typography>
-          <Paper
-            sx={{
-              p: 1.5,
-              borderRadius: 2,
-              bgcolor: '#FFFDE7',
-              border: '2px dashed',
-              borderColor: 'divider',
-            }}
-          >
-            <Typography
-              variant="body2"
-              color={reply ? 'text.primary' : 'text.secondary'}
+          {reply ? (
+            <Paper
+              sx={{
+                p: 1.5,
+                borderRadius: 2,
+                bgcolor: '#FFFDE7',
+                border: '2px dashed',
+                borderColor: 'divider',
+              }}
             >
-              {reply ?? '🤖 返信準備中…'}
-            </Typography>
-          </Paper>
+              <Typography variant="body2">{reply}</Typography>
+            </Paper>
+          ) : (
+            <Chip
+              icon={<CircularProgress size={12} sx={{ ml: 0.5 }} />}
+              label="チャッピー返信中…"
+              size="small"
+              sx={{ bgcolor: '#FFFDE7' }}
+            />
+          )}
         </Box>
       </CardContent>
     </Card>

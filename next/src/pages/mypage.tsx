@@ -11,6 +11,7 @@ import {
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import useSWR from 'swr'
+import { ThanksCard } from '../../types/thanks-card'
 import CardFormModal from './components/CardFormModal'
 import CardList from './components/CardList'
 import Layout from './components/Layout'
@@ -36,7 +37,17 @@ export default function Mypage() {
   }, [notice, router])
 
   //今日のカード一覧を取得
-  const { data: cards, mutate, error } = useSWR('/cards/today', fetcher)
+  const {
+    data: cards, // cards は ThanksCard[] | undefined
+    error,
+    mutate,
+  } = useSWR<ThanksCard[]>('/cards/today', fetcher, {
+    refreshInterval: (current) =>
+      current?.some((card) => !card.reply) ? 5000 : 0,
+  })
+
+  // cards が undefined のときは空配列にフォールバック
+  const todayCards = cards ?? []
 
   //今日の残り投稿数
   const remaining = 3 - (cards?.length ?? 0)
@@ -63,7 +74,7 @@ export default function Mypage() {
     setModalOpen(false)
   }
 
-  // ロード中
+  // ロード中 or エラー時
   if (!cards && !error) {
     return (
       <Layout>
@@ -71,8 +82,6 @@ export default function Mypage() {
       </Layout>
     )
   }
-
-  // エラー表示
   if (error) {
     return (
       <Layout>
@@ -133,7 +142,7 @@ export default function Mypage() {
         </Button>
 
         {/* 今日のカード一覧 */}
-        <CardList cards={cards} />
+        <CardList cards={todayCards} />
 
         {/* 見出し */}
         <Typography

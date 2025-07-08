@@ -15,6 +15,8 @@ import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import useSWR from 'swr'
+
+import { ThanksCard } from '../../types/thanks-card'
 import CardFormModal from './components/CardFormModal'
 import CardList from './components/CardList'
 import Layout from './components/Layout'
@@ -25,86 +27,85 @@ const CalendarMini = dynamic(() => import('./components/CalendarMini'), {
   ssr: false,
 })
 
-export interface Card {
-  id: number
-  content: string
-  logged_date: string
+type DeckResponse = {
+  cards: ThanksCard[]
+  meta: { current_page: number; total_pages: number; total_count: number }
 }
 
 export default function MonthlyDeckPage() {
-  //画面サイズ判定
+  /* 画面サイズで表示数を変える ------------------------------------ */
   const theme = useTheme()
   const isMdUp = useMediaQuery(theme.breakpoints.up('md'))
   const perPage = isMdUp ? 6 : 3
 
+  /* ルーティングパラメータ ---------------------------------------- */
   const router = useRouter()
   const today = dayjs()
   const currentYear = Number(router.query.year ?? today.year())
   const currentMonth = Number(router.query.month ?? today.month() + 1)
 
+  /* ページネーション --------------------------------------------- */
   const [page, setPage] = useState(1)
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value)
   }
-  useEffect(() => {
-    setPage(1)
-  }, [perPage])
+  useEffect(() => setPage(1), [perPage]) // perPage が変わったら 1 ページへ
 
-  //データ取得：ページ切り替え
-  const { data, error, mutate } = useSWR<{
-    cards: Card[]
-    meta: { current_page: number; total_pages: number; total_count: number }
-  }>(
+  /* デッキ取得(ページ分) --------------------------------------- */
+  const {
+    data: pageData,
+    error,
+    mutate: mutatePageData,
+  } = useSWR<DeckResponse>(
     `/cards/deck/${currentYear}/${currentMonth}?page=${page}&per=${perPage}`,
     fetcher,
+    {
+      refreshInterval: (current) =>
+        current?.cards.some((card) => !card.reply) ? 5000 : 0,
+    },
   )
 
-  const cards = data?.cards ?? []
-  const meta = data?.meta
+  const pagedCards: ThanksCard[] = pageData?.cards ?? []
+  const meta = pageData?.meta
 
-  // データ取得: カレンダー用に全件取得
-  const { data: allCardsData } = useSWR<{
-    cards: Card[]
-  }>(`/cards/deck/${currentYear}/${currentMonth}?page=1&per=100`, fetcher)
+  /* カレンダー用：月内すべて ------------------------------------- */
+  const { data: MonthlyData, mutate: mutateMonthlyData } = useSWR<{
+    cards: ThanksCard[]
+  }>(`/cards/deck/${currentYear}/${currentMonth}?page=1&per=100`, fetcher, {
+    refreshInterval: (current) =>
+      current?.cards.some((card) => !card.reply) ? 5000 : 0,
+  })
+  const MonthlyCards = MonthlyData?.cards ?? []
 
-  const allCards = allCardsData?.cards ?? []
-
-  // ['2025-06-19', '2025-06-18']
-  const markedDates = allCardsData
-    ? allCardsData.cards.map((c) => c.logged_date)
-    : []
-
+  /* カレンダー選択 ------------------------------------------------- */
+  const markedDates = MonthlyCards.map((c) => c.logged_date)
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
-  const [modalOpen, setModalOpen] = useState(false)
 
-  //選択日に紐づくカード一覧 or 現ページのカード一覧
   const displayedCards = selectedDate
-    ? allCards.filter((c) => c.logged_date === selectedDate)
-    : cards
+    ? MonthlyCards.filter((c) => c.logged_date === selectedDate)
+    : pagedCards
 
-  //カレンダー月の切り替え
+  /* カード作成 ----------------------------------------------------- */
+  const [modalOpen, setModalOpen] = useState(false)
+  const handleCreate = async (card: {
+    content: string
+    logged_date: string
+  }) => {
+    await api.post('/cards', { card })
+    mutatePageData()
+    mutateMonthlyData()
+    setModalOpen(false)
+  }
+
+  /* 月切替＆マイページ ------------------------------------------- */
   const handleChangeMonth = (y: number, m: number) => {
     router.push(`/cards?year=${y}&month=${m}`)
     setSelectedDate(null)
   }
+  const goToMypage = () => router.push('/mypage')
 
-  //カード作成
-  const handleCreate = async (cardData: {
-    content: string
-    logged_date: string
-  }) => {
-    await api.post('/cards', { card: cardData })
-    await mutate()
-    setModalOpen(false)
-  }
-
-  //mypageに戻る
-  const goToMypage = () => {
-    router.push('/mypage')
-  }
-
-  //ローディング & エラーハンドリング
-  if (!cards && !error) return <CircularProgress />
+  /* ローディング／エラー ----------------------------------------- */
+  if (!pageData && !error) return <CircularProgress />
   if (error) return <p>取得エラー</p>
 
   return (
@@ -120,6 +121,7 @@ export default function MonthlyDeckPage() {
         </Button>
       </Box>
 
+      {/* カレンダー */}
       <CalendarMini
         year={currentYear}
         month={currentMonth}
@@ -129,7 +131,7 @@ export default function MonthlyDeckPage() {
         setSelectDate={setSelectedDate}
       />
 
-      {/* 選択日がある場合は日付ヘッダー */}
+      {/* ヘッダー */}
       <Typography sx={{ mt: 3, mb: 2, textAlign: 'center', fontWeight: 700 }}>
         {selectedDate
           ? dayjs(selectedDate).format('YYYY年M月D日')
@@ -160,6 +162,7 @@ export default function MonthlyDeckPage() {
         />
       )}
 
+      {/* 新規ボタン */}
       <Fab
         color="primary"
         sx={{ position: 'fixed', bottom: 24, right: 24 }}

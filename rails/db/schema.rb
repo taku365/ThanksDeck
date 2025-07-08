@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_06_21_120800) do
+ActiveRecord::Schema[7.1].define(version: 2025_07_07_050232) do
   create_table "cards", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "content", comment: "感謝内容(最大140文字)"
     t.date "logged_date", comment: "記録日"
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "reply"
     t.index ["user_id"], name: "index_cards_on_user_id"
   end
 

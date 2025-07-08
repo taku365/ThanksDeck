@@ -88,7 +88,7 @@ class Api::V1::CardsController < Api::V1::BaseController
 
     # 属性を限定してハッシュ化
     def serialize(resource)
-      resource.as_json(only: %i[id content logged_date])
+      resource.as_json(only: %i[id content logged_date reply])
     end
 
     # card 以下のパラメータから content と logged_date のみを許可して安全に受け取る
