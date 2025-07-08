@@ -1,6 +1,10 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
+
+# テスト中はダミーの OpenAI API キーを設定
+ENV['OPENAI_API_KEY'] ||= 'test_dummy_key'
+
 require_relative '../config/environment'
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
