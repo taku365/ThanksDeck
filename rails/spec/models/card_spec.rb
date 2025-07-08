@@ -1,6 +1,11 @@
 require "rails_helper"
 
 RSpec.describe Card, type: :model do
+  # テスト中は外部 API 呼び出しをせず、固定の返信を返すようにスタブする
+  before do
+    allow(OpenaiClient).to receive(:generate_reply).and_return("テスト返信")
+  end
+
   describe "新規作成" do
     context "factoryのデフォルト設定に従った時" do
       subject { create(:card) }
