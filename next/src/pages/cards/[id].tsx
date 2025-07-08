@@ -19,6 +19,7 @@ import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import useSWR from 'swr'
 
+import { ThanksCard } from '../../../types/thanks-card'
 import CardFormModal from '../components/CardFormModal'
 import Layout from '../components/Layout'
 import { useCurrentUser } from '@/hooks/useCurrentUser'
@@ -33,7 +34,10 @@ export default function CardDetailPage() {
     data: card,
     error,
     mutate,
-  } = useSWR(id ? `/cards/${id}` : null, fetcher)
+  } = useSWR<ThanksCard>(id ? `/cards/${id}` : null, fetcher, {
+    refreshInterval: (current) => (current?.reply ? 0 : 5000),
+  })
+
   const { currentUser, isLoading } = useCurrentUser()
   const [isEditOpen, setIsEditOpen] = useState(false)
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
@@ -52,6 +56,7 @@ export default function CardDetailPage() {
         <CircularProgress />
       </Layout>
     )
+  if (!card) return null
   if (!currentUser) return null
   if (error)
     return (
@@ -156,12 +161,18 @@ export default function CardDetailPage() {
             <Typography variant="subtitle2" color="text.secondary" gutterBottom>
               🤖 チャッピー の返信
             </Typography>
-            <Typography
-              variant="body2"
-              sx={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
-            >
-              {card.reply ?? '返信準備中…'}
-            </Typography>
+            {card.reply ? (
+              <Typography
+                variant="body2"
+                sx={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
+              >
+                {card.reply}
+              </Typography>
+            ) : (
+              <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+                <CircularProgress />
+              </Box>
+            )}
           </Box>
 
           {/* 削除アイコン */}

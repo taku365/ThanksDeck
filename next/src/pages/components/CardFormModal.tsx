@@ -93,7 +93,11 @@ export default function CardFormModal({
           {/* ─── フォーム部分 ─── */}
           <Box sx={{ px: 3, py: 2 }}>
             {errors.map((err, i) => (
-              <Typography color="error" key={i} sx={{ mb: 1 }}>
+              <Typography
+                color="error"
+                key={i}
+                sx={{ mb: 3, textAlign: 'center' }}
+              >
                 {err}
               </Typography>
             ))}
