@@ -10,7 +10,8 @@ class Api::V1::CardsController < Api::V1::BaseController
 
   # GET /api/v1/cards/today　今日のカード一覧
   def today
-    cards = current_user.cards.where(logged_date: Time.zone.today).order(logged_date: :desc)
+    today_date = Date.current
+    cards = current_user.cards.where(logged_date: today_date).order(logged_date: :desc)
     render json: serialize(cards), status: :ok
   end
 
