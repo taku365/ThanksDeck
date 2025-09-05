@@ -1,0 +1,33 @@
+FROM ruby:3.1.2-alpine
+
+# mysql2 のビルドに必要なヘッダ等（最小）
+# ランタイムは残す / ビルド専用は後で削除
+RUN apk add --no-cache \
+      bash tzdata curl mysql-client mariadb-connector-c libstdc++ \
+  && apk add --no-cache --virtual .build-deps \
+      build-base mariadb-connector-c-dev
+
+# 本番向け：dev/test を除外して軽量化
+ENV RAILS_ENV=production RACK_ENV=production TZ=Asia/Tokyo \
+    BUNDLE_WITHOUT="development:test" BUNDLE_JOBS=4 BUNDLE_RETRY=3
+
+WORKDIR /app
+
+# 依存解決（キャッシュ用に先にコピー）
+COPY Gemfile Gemfile.lock ./
+# ※ 事前にローカルで一度： bundle lock --add-platform aarch64-linux-musl
+RUN bundle install
+
+# ここまで来たらビルド依存を掃除（イメージをスリムに）
+RUN apk del .build-deps
+
+# アプリ本体
+COPY . .
+
+EXPOSE 3000
+
+# 起動モード切替（web/worker）
+COPY rails/entrypoint.prod.sh /entrypoint
+RUN chmod +x /entrypoint
+ENTRYPOINT ["/entrypoint"]
+CMD ["web"]
