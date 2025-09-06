@@ -1,25 +1,18 @@
 default: &default
   adapter: mysql2
   encoding: utf8mb4
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS", 5) %>
-
-production:
-  <<: *default
-  # 本番は SSM から注入される DATABASE_URL を丸ごと使う
-  url: <%= ENV.fetch("DATABASE_URL") %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: root
+  port: 3306
 
 development:
   <<: *default
   host: db
   database: myapp_development
-  username: root
   password: password
-  port: 3306
 
 test:
   <<: *default
   host: db
   database: myapp_test
-  username: root
   password: password
-  port: 3306
