@@ -10,7 +10,8 @@ class Api::V1::CardsController < Api::V1::BaseController
 
   # GET /api/v1/cards/today　今日のカード一覧
   def today
-    cards = current_user.cards.where(logged_date: Time.zone.today).order(logged_date: :desc)
+    today_date = Date.current
+    cards = current_user.cards.where(logged_date: today_date).order(logged_date: :desc)
     render json: serialize(cards), status: :ok
   end
 
@@ -88,7 +89,7 @@ class Api::V1::CardsController < Api::V1::BaseController
 
     # 属性を限定してハッシュ化
     def serialize(resource)
-      resource.as_json(only: %i[id content logged_date])
+      resource.as_json(only: %i[id content logged_date reply])
     end
 
     # card 以下のパラメータから content と logged_date のみを許可して安全に受け取る
