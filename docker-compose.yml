@@ -1,10 +1,4 @@
 services:
-  redis:
-    image: redis:7-alpine
-    container_name: redis
-    ports:
-      - "6379:6379"
-      
   db:
     image: mysql:8.0.32
     platform: linux/arm64/v8
@@ -29,25 +23,11 @@ services:
       - 3000:3000
     depends_on:
       - db
-      - redis
     tty: true
     stdin_open: true
     env_file:
       - ./rails/.env.development
 
-  sidekiq:
-    build:
-      context: ./rails
-    command: bash -c "bundle exec sidekiq"
-    volumes:
-      - ./rails:/myapp
-    depends_on:
-      - db
-      - redis
-    env_file:
-      - ./rails/.env.development
-    tty: true
-    stdin_open: true
 
   next:
     platform: linux/arm64/v8
@@ -60,5 +40,29 @@ services:
       - ./next:/app
     ports:
       - "8000:3000"
+
+
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: redis
+  #   ports:
+  #     - "6379:6379"
+
+
+  # sidekiq:
+  #   build:
+  #     context: ./rails
+  #   command: bash -c "bundle exec sidekiq"
+  #   volumes:
+  #     - ./rails:/myapp
+  #   depends_on:
+  #     - db
+  #     - redis
+  #   env_file:
+  #     - ./rails/.env.development
+  #   tty: true
+  #   stdin_open: true
+
+
 volumes:
   mysql_data:
