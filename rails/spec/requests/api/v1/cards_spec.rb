@@ -1,6 +1,10 @@
 require "rails_helper"
 
 RSpec.describe "Api::V1::Cards", type: :request do
+  before do
+    allow(GenerateReplyJob).to receive(:perform_now)
+  end
+
   let(:user)   { create(:user, confirmed_at: Time.current) }
   # 昨日のカードを３件作成(createテストで新規作成ができなくなってしまうため)
   let!(:cards) { create_list(:card, 3, user: user, logged_date: Date.yesterday) }
