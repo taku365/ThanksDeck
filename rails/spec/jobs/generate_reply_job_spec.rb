@@ -7,9 +7,8 @@ RSpec.describe GenerateReplyJob, type: :job do
     card = create(:card, content: "ありがとう！")
     allow(OpenaiClient).to receive(:generate_reply).and_return("dummy")
 
-    described_class.new.perform(card.id)
+    GenerateReplyJob.new.perform(card.id)
 
     expect(OpenaiClient).to have_received(:generate_reply).with("ありがとう！")
   end
 end
-
