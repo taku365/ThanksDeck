@@ -1,0 +1,39 @@
+FROM ruby:3.1.2
+
+ENV LANG=C.UTF-8 \
+   TZ=Asia/Tokyo \
+   RAILS_ENV=production \
+   BUNDLE_WITHOUT=development:test \
+   BUNDLE_JOBS=4 \
+   BUNDLE_RETRY=3 \
+   BUNDLE_FORCE_RUBY_PLATFORM=1
+
+WORKDIR /myapp
+
+COPY Gemfile Gemfile.lock ./
+
+RUN apt-get update && \
+   apt-get install -y --no-install-recommends \
+     build-essential \
+     pkg-config \
+     default-libmysqlclient-dev \
+     libvips \
+     libvips-dev && \
+   rm -rf /var/lib/apt/lists/*
+
+RUN BUNDLER_VERSION=$(awk '/BUNDLED WITH/{getline; gsub(/^[ \t]+/,""); print}' Gemfile.lock) \
+&& gem install bundler -v "${BUNDLER_VERSION}" \
+&& bundle _${BUNDLER_VERSION}_ config set path 'vendor/bundle' \
+&& bundle _${BUNDLER_VERSION}_ install
+
+# アプリ本体
+COPY . /myapp
+RUN mkdir -p tmp/sockets tmp/pids
+
+VOLUME ["/myapp/public", "/myapp/tmp"]
+
+COPY entrypoint.prod.sh /usr/bin/entrypoint.prod.sh
+RUN chmod +x /usr/bin/entrypoint.prod.sh
+ENTRYPOINT ["entrypoint.prod.sh"]
+
+EXPOSE 3000
