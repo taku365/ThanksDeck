@@ -5,7 +5,6 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
     "lint": "next lint --dir src",
     "format": "next lint --fix --dir src"
   },
@@ -28,7 +27,9 @@
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.11.0",
-    "@types/node": "^20",
+    "@types/json-schema": "^7.0.15",
+    "@types/node": "^20.19.13",
+    "@types/parse-json": "^4.0.2",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@typescript-eslint/eslint-plugin": "^6.5.0",

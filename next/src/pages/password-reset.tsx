@@ -12,7 +12,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { Controller, useForm, SubmitHandler } from 'react-hook-form'
 
-import Layout from './components/Layout'
+import Layout from '../components/Layout'
 import { api } from '@/utils/api'
 import { setAuthTokens } from '@/utils/tokenStorage'
 

@@ -2,7 +2,7 @@ import { Container, Alert, Button, Box, Typography } from '@mui/material'
 import { isAxiosError } from 'axios'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
-import Layout from './components/Layout'
+import Layout from '../components/Layout'
 import { api } from '@/utils/api'
 
 export default function ConfirmationPendingPage() {

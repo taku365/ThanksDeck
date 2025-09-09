@@ -17,13 +17,13 @@ import { useEffect, useState } from 'react'
 import useSWR from 'swr'
 
 import { ThanksCard } from '../../types/thanks-card'
-import CardFormModal from './components/CardFormModal'
-import CardList from './components/CardList'
-import Layout from './components/Layout'
+import CardFormModal from '../components/CardFormModal'
+import Layout from '../components/Layout'
+import CardList from '@/components/CardList'
 import { api, fetcher } from '@/utils/api'
 
 // Hydration エラー回避
-const CalendarMini = dynamic(() => import('./components/CalendarMini'), {
+const CalendarMini = dynamic(() => import('../components/CalendarMini'), {
   ssr: false,
 })
 
