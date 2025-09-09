@@ -20,8 +20,8 @@ import React, { useEffect, useState } from 'react'
 import useSWR from 'swr'
 
 import { ThanksCard } from '../../../types/thanks-card'
-import CardFormModal from '../components/CardFormModal'
-import Layout from '../components/Layout'
+import CardFormModal from '../../components/CardFormModal'
+import Layout from '../../components/Layout'
 import { useCurrentUser } from '@/hooks/useCurrentUser'
 import { api, fetcher } from '@/utils/api'
 

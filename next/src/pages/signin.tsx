@@ -11,7 +11,7 @@ import { isAxiosError } from 'axios'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
-import Layout from './components/Layout'
+import Layout from '../components/Layout'
 import { useAuth } from '@/hooks/useAuth'
 
 interface SignInFormData {

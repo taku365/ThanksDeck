@@ -14,7 +14,7 @@ import Tooltip from '@mui/material/Tooltip'
 import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
 import React from 'react'
-import { ThanksCard } from '../../../types/thanks-card'
+import { ThanksCard } from '../../types/thanks-card'
 
 export default function CardItem({
   id,

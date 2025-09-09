@@ -13,7 +13,7 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 
-import Layout from './components/Layout'
+import Layout from '../components/Layout'
 import { api } from '@/utils/api'
 
 interface ForgotPwFormData {
