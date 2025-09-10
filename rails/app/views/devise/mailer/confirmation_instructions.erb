@@ -1,6 +1,11 @@
+<% confirmation_url =
+   "#{Settings.front_domain}/confirmation?confirmation_token=#{@token}" %>
+
 <p><%= t(:welcome).capitalize + ' ' + @email %>!</p>
+<p><%= t '.confirm_link_msg' %></p>
 
-<p><%= t '.confirm_link_msg' %> </p>
+<p><%= link_to t('.confirm_account_link'), confirmation_url,
+             target: :_blank, rel: "noopener noreferrer" %></p>
 
-<p><%= link_to t('.confirm_account_link'), "#{Settings.front_domain}/confirmation?confirmation_token=#{@token}", target: :_blank, rel: "noopener noreferrer" %></p>
-
+<p>※リンクが開けない場合は、次のURLをブラウザに貼り付けてください。</p>
+<p><%= confirmation_url %></p>
