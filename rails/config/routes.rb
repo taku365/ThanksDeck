@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       # DeviseTokenAuth の標準認証ルート一式を /api/v1/auth にマウント
       mount_devise_token_auth_for "User", at: "auth", controllers: {
         sessions: "api/v1/auth/sessions",
+        passwords: "api/v1/user/passwords",
       }
 
       # Devise の User 認証スコープとして追加
