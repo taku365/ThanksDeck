@@ -5,7 +5,13 @@ class OpenaiClient
   MODEL = "gpt-4.1-nano"
 
   def self.generate_reply(user_content)
-    client = OpenAI::Client.new(access_token: ENV.fetch("OPENAI_API_KEY"))
+    api_key =
+      ENV["OPENAI_API_KEY"].presence ||
+      Rails.application.credentials.dig(Rails.env.to_sym, :openai, :api_key).presence
+
+    return nil if api_key.blank?
+
+    client = OpenAI::Client.new(access_token: api_key)
 
     response = client.chat(
       parameters: {
@@ -18,8 +24,7 @@ class OpenaiClient
       },
     )
 
-    # choices → message → content のネストをたどって実テキストを取得
     text = response.dig("choices", 0, "message", "content")
-    text&.slice(0, 140) # 念のため 140 文字で切り捨て
+    text&.slice(0, 140)
   end
 end

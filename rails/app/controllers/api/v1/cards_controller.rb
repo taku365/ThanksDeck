@@ -59,7 +59,7 @@ class Api::V1::CardsController < Api::V1::BaseController
 
     card = current_user.cards.build(card_params)
     if card.save
-      GenerateReplyJob.perform_now(card.id)
+      GenerateReplyJob.perform_later(card.id)
       render json: card.as_json(only: %i[id content logged_date]),
              status: :created
     else
@@ -73,7 +73,7 @@ class Api::V1::CardsController < Api::V1::BaseController
     card = current_user.cards.find(params[:id])
 
     if card.update(card_params)
-      GenerateReplyJob.perform_now(card.id) if card.previous_changes.has_key?("content")
+      GenerateReplyJob.perform_later(card.id) if card.previous_changes.has_key?("content")
       render json: card.as_json(only: %i[id content logged_date]), status: :ok
     else
       render json: { errors: card.errors.full_messages }, status: :unprocessable_entity
