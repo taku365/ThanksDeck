@@ -1,0 +1,83 @@
+name: Frontend CD (Next.js → S3/CloudFront)
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "next/**"
+
+env:
+  AWS_REGION: ap-northeast-1
+  S3_BUCKET: thanksdeck-bucket
+  CF_DISTRIBUTION_ID: E3JJHZVDJHCVJ9
+  NEXT_DIR: ./next
+  OUT_DIR: ./next/out
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: frontend-prod
+  cancel-in-progress: true
+
+jobs:
+  # ci.yml によるチェック
+  ci:
+    uses: ./.github/workflows/ci.yml
+
+  # ci クリア後、Next.jsの自動デプロイ。
+  deploy-next:
+    needs: [ci]
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: ${{ env.NEXT_DIR }}/package-lock.json
+
+      - name: Install deps
+        working-directory: ${{ env.NEXT_DIR }}
+        run: npm ci
+
+      - name: Build & Export (static)
+        working-directory: ${{ env.NEXT_DIR }}
+        run: |
+          npm run build
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::459497896054:role/GitHubActions-FrontendDeployRole-Prod
+          aws-region: ${{ env.AWS_REGION }}
+
+      - uses: aws-actions/setup-aws-cli@v2
+
+      # アセット（HTML以外）を差分アップ＋不要削除、長期キャッシュでアップ
+      - name: Upload assets (non-HTML) with long cache
+        run: |
+          aws s3 sync "${{ env.OUT_DIR }}/" "s3://${{ env.S3_BUCKET }}/" \
+            --delete \
+            --exclude "*.html" \
+            --cache-control "public,max-age=31536000,immutable"
+
+      # HTMLは常に最新を取らせる（no-store）
+      - name: Upload HTML with no-store
+        run: |
+          aws s3 cp "${{ env.OUT_DIR }}/" "s3://${{ env.S3_BUCKET }}/" \
+            --recursive \
+            --exclude "*" --include "*.html" \
+            --cache-control "no-store" \
+            --content-type "text/html"
+
+      # CloudFront 無効化
+      - name: Invalidate CloudFront
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id "${{ env.CF_DISTRIBUTION_ID }}" \
+            --paths "/*"
