@@ -1,6 +1,6 @@
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import CreateIcon from '@mui/icons-material/Create'
-import ShareIcon from '@mui/icons-material/Share'
+import SmartToyIcon from '@mui/icons-material/SmartToy'
 import { Box, Grid, Typography } from '@mui/material'
 import React from 'react'
 
@@ -26,7 +26,20 @@ export default function FeatureSection() {
           </Typography>
         </Grid>
 
-        {/* 特徴2 */}
+        {/* 特徴２ */}
+        <Grid item xs={12} md={4}>
+          <Box textAlign="center" sx={{ mb: 2 }}>
+            <SmartToyIcon sx={{ fontSize: 40 }} />
+          </Box>
+          <Typography variant="h6" align="center" sx={{ mb: 1 }}>
+            チャッピーの返信機能
+          </Typography>
+          <Typography variant="body2" align="center">
+            励みになるお返し
+          </Typography>
+        </Grid>
+
+        {/* 特徴３ */}
         <Grid item xs={12} md={4}>
           <Box textAlign="center" sx={{ mb: 2 }}>
             <CalendarTodayIcon sx={{ fontSize: 40 }} />
@@ -36,19 +49,6 @@ export default function FeatureSection() {
           </Typography>
           <Typography variant="body2" align="center">
             過去の感謝を一覧で確認
-          </Typography>
-        </Grid>
-
-        {/* 特徴3 */}
-        <Grid item xs={12} md={4}>
-          <Box textAlign="center" sx={{ mb: 2 }}>
-            <ShareIcon sx={{ fontSize: 40 }} />
-          </Box>
-          <Typography variant="h6" align="center" sx={{ mb: 1 }}>
-            SNSで共有
-          </Typography>
-          <Typography variant="body2" align="center">
-            かんたんワンクリック
           </Typography>
         </Grid>
       </Grid>

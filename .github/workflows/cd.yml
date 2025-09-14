@@ -2,9 +2,11 @@
 name: Continuous Delivery
 
 # main に push された時に実行
+# on:
+#   push:
+#     branches: [ "main" ]
 on:
-  push:
-    branches: [ "main" ]
+  workflow_dispatch:
 
 # 共通変数
 env:
