@@ -1,37 +1,15 @@
 {
   "family": "thanksdeck-task-definition-backend",
-  "requiresCompatibilities": ["FARGATE"],
-  "networkMode": "awsvpc",
-  "cpu": "256",
-  "memory": "512",
-  "runtimePlatform": {
-    "cpuArchitecture": "ARM64",
-    "operatingSystemFamily": "LINUX"
-  },
-  "executionRoleArn": "arn:aws:iam::459497896054:role/ecsTaskExecutionRole",
-  "taskRoleArn": "arn:aws:iam::459497896054:role/ecsTaskExecutionRole",
   "containerDefinitions": [
     {
-      "name": "rails",
-      "image": "459497896054.dkr.ecr.ap-northeast-1.amazonaws.com/thanksdeck-rails:latest",
-      "essential": true,
       "cpu": 0,
-      "portMappings": [
+      "environment": [
         {
-          "name": "rails-3000-tcp",
-          "containerPort": 3000,
-          "hostPort": 3000,
-          "protocol": "tcp",
-          "appProtocol": "http"
+          "name": "RAILS_LOG_TO_STDOUT",
+          "value": "true"
         }
       ],
-      "environment": [{ "name": "RAILS_LOG_TO_STDOUT", "value": "true" }],
-      "secrets": [
-        {
-          "name": "RAILS_MASTER_KEY",
-          "valueFrom": "/thanksdeck/prod/rails_master_key"
-        }
-      ],
+      "essential": true,
       "healthCheck": {
         "command": [
           "CMD-SHELL",
@@ -41,6 +19,7 @@
         "retries": 3,
         "timeout": 5
       },
+      "image": "459497896054.dkr.ecr.ap-northeast-1.amazonaws.com/thanksdeck-rails@sha256:cbcb65b3917e43d22648af127fe783fcd6918f5f2abbadcc1ae51a067b5c2de3",
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
@@ -48,25 +27,39 @@
           "awslogs-create-group": "true",
           "awslogs-region": "ap-northeast-1",
           "awslogs-stream-prefix": "ecs"
-        }
-      }
-    },
-    {
-      "name": "nginx",
-      "image": "459497896054.dkr.ecr.ap-northeast-1.amazonaws.com/thanksdeck-nginx",
-      "essential": true,
-      "cpu": 0,
-      "dependsOn": [{ "containerName": "rails", "condition": "HEALTHY" }],
+        },
+        "secretOptions": []
+      },
+      "mountPoints": [],
+      "name": "rails",
       "portMappings": [
         {
-          "name": "nginx-80-tcp",
-          "containerPort": 80,
-          "hostPort": 80,
-          "protocol": "tcp",
-          "appProtocol": "http"
+          "appProtocol": "http",
+          "containerPort": 3000,
+          "hostPort": 3000,
+          "name": "rails-3000-tcp",
+          "protocol": "tcp"
         }
       ],
-      "volumesFrom": [{ "sourceContainer": "rails", "readOnly": false }],
+      "secrets": [
+        {
+          "name": "RAILS_MASTER_KEY",
+          "valueFrom": "/thanksdeck/prod/rails_master_key"
+        }
+      ],
+      "systemControls": [],
+      "volumesFrom": []
+    },
+    {
+      "cpu": 0,
+      "dependsOn": [
+        {
+          "condition": "HEALTHY",
+          "containerName": "rails"
+        }
+      ],
+      "environment": [],
+      "essential": true,
       "healthCheck": {
         "command": [
           "CMD-SHELL",
@@ -76,6 +69,7 @@
         "retries": 3,
         "timeout": 5
       },
+      "image": "459497896054.dkr.ecr.ap-northeast-1.amazonaws.com/thanksdeck-nginx",
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
@@ -83,10 +77,39 @@
           "awslogs-create-group": "true",
           "awslogs-region": "ap-northeast-1",
           "awslogs-stream-prefix": "ecs"
+        },
+        "secretOptions": []
+      },
+      "mountPoints": [],
+      "name": "nginx",
+      "portMappings": [
+        {
+          "appProtocol": "http",
+          "containerPort": 80,
+          "hostPort": 80,
+          "name": "nginx-80-tcp",
+          "protocol": "tcp"
         }
-      }
+      ],
+      "systemControls": [],
+      "volumesFrom": [
+        {
+          "readOnly": false,
+          "sourceContainer": "rails"
+        }
+      ]
     }
   ],
+  "taskRoleArn": "arn:aws:iam::459497896054:role/ecsTaskExecutionRole",
+  "executionRoleArn": "arn:aws:iam::459497896054:role/ecsTaskExecutionRole",
+  "networkMode": "awsvpc",
   "volumes": [],
-  "placementConstraints": []
+  "placementConstraints": [],
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512",
+  "runtimePlatform": {
+    "cpuArchitecture": "ARM64",
+    "operatingSystemFamily": "LINUX"
+  }
 }
