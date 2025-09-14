@@ -28,7 +28,6 @@ jobs:
   deploy-next:
     needs: [ci]
     runs-on: ubuntu-latest
-    environment: production
 
     steps:
       - name: Checkout
