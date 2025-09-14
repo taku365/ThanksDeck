@@ -32,7 +32,7 @@ export default function FeatureSection() {
             <SmartToyIcon sx={{ fontSize: 40 }} />
           </Box>
           <Typography variant="h6" align="center" sx={{ mb: 1 }}>
-            テストテスト
+            チャッピーからの返信
           </Typography>
           <Typography variant="body2" align="center">
             励みになるお返し
