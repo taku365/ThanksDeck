@@ -1,5 +1,5 @@
 # CIチェックが通ること確認した上で、Rails を自動デプロイ
-name: Continuous Delivery
+name: Backend CD (Rails → ECS)
 
 on:
   push:
