@@ -34,15 +34,17 @@ jobs:
     environment: production
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
+      - name: Setup Node.js environment
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
           cache-dependency-path: ${{ env.NEXT_DIR }}/package-lock.json
 
-      - name: Install deps
+      - name: Install dependencies
         working-directory: ${{ env.NEXT_DIR }}
         run: npm ci
 
@@ -57,11 +59,6 @@ jobs:
           role-to-assume: arn:aws:iam::459497896054:role/GitHubActions-FrontendDeployRole-Prod
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Install CLI (fallback)
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y awscli
-
       # アセット（HTML以外）を差分アップ＋不要削除、長期キャッシュでアップ
       - name: Upload assets (non-HTML) with long cache
         run: |
@@ -73,8 +70,8 @@ jobs:
       # HTMLは常に最新を取らせる（no-store）
       - name: Upload HTML with no-store
         run: |
-          aws s3 cp "${{ env.OUT_DIR }}/" "s3://${{ env.S3_BUCKET }}/" \
-            --recursive \
+          aws s3 sync "${{ env.OUT_DIR }}/" "s3://${{ env.S3_BUCKET }}/" \
+            --delete \
             --exclude "*" --include "*.html" \
             --cache-control "no-store" \
             --content-type "text/html"
