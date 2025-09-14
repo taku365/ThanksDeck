@@ -4,8 +4,6 @@ name: Backend CD (Rails → ECS)
 on:
   push:
     branches: [ "main" ]
-# on:
-#   workflow_dispatch:
 
 # 共通変数
 env:
