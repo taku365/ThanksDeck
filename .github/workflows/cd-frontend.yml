@@ -57,7 +57,10 @@ jobs:
           role-to-assume: arn:aws:iam::459497896054:role/GitHubActions-FrontendDeployRole-Prod
           aws-region: ${{ env.AWS_REGION }}
 
-      - uses: aws-actions/setup-aws-cli@v4
+      - name: Install CLI (fallback)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y awscli
 
       # アセット（HTML以外）を差分アップ＋不要削除、長期キャッシュでアップ
       - name: Upload assets (non-HTML) with long cache
