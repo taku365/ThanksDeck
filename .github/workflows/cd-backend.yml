@@ -4,6 +4,8 @@ name: Backend CD (Rails → ECS)
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - "rails/**"
 
 # 共通変数
 env:
