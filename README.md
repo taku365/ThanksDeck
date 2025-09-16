@@ -13,7 +13,7 @@
 <br>
 
 ## サービスの概要
-「ThanksDeck（サンクスデック）」は、日々の感謝を記録するための個人向けアプリです。
+「ThanksDeck（サンクスデック）」は、日々の感謝を記録するための個人向けアプリです。  
 **"日々の感謝を忘れない"** をコンセプトに、習慣的なふりかえりをサポートします。
 
 URL：https://thanksdeck.com
@@ -74,7 +74,7 @@ URL：https://thanksdeck.com
 
 ## インフラ構成図
 
-<img width="959" height="1090" alt="Image" src="https://github.com/user-attachments/assets/df519c12-03ef-4a43-87fb-c30794f0cb29" />
+<img width="600" alt="Image" src="https://github.com/user-attachments/assets/df519c12-03ef-4a43-87fb-c30794f0cb29" />
 
 <br>
 
@@ -82,7 +82,7 @@ URL：https://thanksdeck.com
 
 ### ホーム
 
-<img width="1249" height="879" alt="Image" src="https://github.com/user-attachments/assets/655c4c87-21be-4a0e-be46-fdb449357f82" />
+<img width="600" alt="Image" src="https://github.com/user-attachments/assets/655c4c87-21be-4a0e-be46-fdb449357f82" />
 
 ---
 
@@ -90,7 +90,7 @@ URL：https://thanksdeck.com
 
 | 入力時バリデーション | 送信時バリデーション |
 | -- | -- |
-|![Image](https://github.com/user-attachments/assets/acc0a46d-02ca-43a3-8ae5-faf69d2894d2) | ![Image](https://github.com/user-attachments/assets/aa95c80c-86ec-4233-8712-53500cef8fb8) |
+|<img src="https://github.com/user-attachments/assets/acc0a46d-02ca-43a3-8ae5-faf69d2894d2" width="300"> | <img src="https://github.com/user-attachments/assets/aa95c80c-86ec-4233-8712-53500cef8fb8" width="300"> |
 
 ---
 
@@ -98,7 +98,7 @@ URL：https://thanksdeck.com
 
 | 入力時バリデーション | 送信時バリデーション |
 | -- | -- |
-| ![Image](https://github.com/user-attachments/assets/1cb9c947-e076-49a9-ab42-27df87610e90) | ![Image](https://github.com/user-attachments/assets/d67545c7-c244-4f13-bf0b-f302c0cd6106) |
+| <img src="https://github.com/user-attachments/assets/1cb9c947-e076-49a9-ab42-27df87610e90" width="300">| <img src="https://github.com/user-attachments/assets/d67545c7-c244-4f13-bf0b-f302c0cd6106" width="300">
 
 ---
 
@@ -106,11 +106,11 @@ URL：https://thanksdeck.com
 
 #### 認証確認通知
 
-<img width="810" height="458" alt="Image" src="https://github.com/user-attachments/assets/fe4a511f-0602-48b0-b88c-b2e25a3d709b" />
+<img width="600" alt="Image" src="https://github.com/user-attachments/assets/fe4a511f-0602-48b0-b88c-b2e25a3d709b" />
 
 #### 認証用メール
 
-<img width="671" height="339" alt="Image" src="https://github.com/user-attachments/assets/ad62c177-93ca-474f-92f0-a0a69fd333e4" />
+<img width="600" alt="Image" src="https://github.com/user-attachments/assets/ad62c177-93ca-474f-92f0-a0a69fd333e4" />
 
 ---
 
@@ -120,10 +120,9 @@ URL：https://thanksdeck.com
 
 | 入力時バリデーション | 送信時バリデーション |
 | -- | -- |
-| ![Image](https://github.com/user-attachments/assets/30ce2432-15af-4b5f-a9b2-dd8ace9b4507) | ![Image](https://github.com/user-attachments/assets/c3be4d2c-78b8-456c-8731-ac5f4aadf7fc) |
-
+| <img src="https://github.com/user-attachments/assets/30ce2432-15af-4b5f-a9b2-dd8ace9b4507" alt="Image" width="300"> | <img src="https://github.com/user-attachments/assets/c3be4d2c-78b8-456c-8731-ac5f4aadf7fc" alt="Image" width="300"> 
 #### 再設定用メール
 
-<img width="668" height="300" alt="Image" src="https://github.com/user-attachments/assets/e077aef2-1d53-4ff4-b155-7ae1879edbb5" />
+<img width="600" alt="Image" src="https://github.com/user-attachments/assets/e077aef2-1d53-4ff4-b155-7ae1879edbb5" />
 
 ---
