@@ -10,31 +10,34 @@
 1. 今後の展望
 1. まとめ
 
+<br>
+
 ## サービスの概要
 「ThanksDeck（サンクスデック）」は、日々の感謝を記録するための個人向けアプリです。
 **"日々の感謝を忘れない"** をコンセプトに、習慣的なふりかえりをサポートします。
 
 URL：https://thanksdeck.com
 
+<br>
 
 ## 主な機能
-**認証・アカウント関連**
+### 認証・アカウント関連
 - メールアドレス認証、パスワードリセット、ゲストログイン
 
-**ThanksCard**
+### ThanksCard
 - カード作成（1日最大3枚まで作成可能）
 - カード一覧表示（月ごと・日ごとにフィルタリング）
 - カード詳細表示／編集／削除
 - ページネーション
 
-**カレンダー表示**
+### カレンダー表示
 - 作成済みの日付を色付け
 - クリックでその日のカード一覧へ遷移
 
-**AIリプライ**
+### AIリプライ
 - 作成したカードに対してChatGPTが自動返信
 
-
+<br>
 
 ## 使用技術
 
@@ -67,11 +70,13 @@ URL：https://thanksdeck.com
 
 </details>
 
-
+<br>
 
 ## インフラ構成図
 
 <img width="959" height="1090" alt="Image" src="https://github.com/user-attachments/assets/df519c12-03ef-4a43-87fb-c30794f0cb29" />
+
+<br>
 
 ## 画面
 
@@ -101,7 +106,7 @@ URL：https://thanksdeck.com
 
 #### 認証確認通知
 
-![Image](https://github.com/user-attachments/assets/3c33e41b-c538-4391-90b7-754a53ad1b6d")
+<img width="810" height="458" alt="Image" src="https://github.com/user-attachments/assets/fe4a511f-0602-48b0-b88c-b2e25a3d709b" />
 
 #### 認証用メール
 
