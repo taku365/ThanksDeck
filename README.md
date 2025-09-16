@@ -71,9 +71,9 @@ URL：https://thanksdeck.com
 
 ## 画面
 
-<img width="1249" height="879" alt="Image" src="https://github.com/user-attachments/assets/655c4c87-21be-4a0e-be46-fdb449357f82" />
-
 ### ホーム
+
+<img width="1249" height="879" alt="Image" src="https://github.com/user-attachments/assets/655c4c87-21be-4a0e-be46-fdb449357f82" />
 
 ---
 
@@ -97,9 +97,7 @@ URL：https://thanksdeck.com
 
 #### 認証確認通知
 
-<img width="1274" height="875" alt="Image" src="https://github.com/user-attachments/assets/3daa023e-4d36-4fef-86a4-d2ee02f51456" />
-
----
+![Image](https://github.com/user-attachments/assets/3c33e41b-c538-4391-90b7-754a53ad1b6d")
 
 #### 認証用メール
 
@@ -114,8 +112,6 @@ URL：https://thanksdeck.com
 | 入力時バリデーション | 送信時バリデーション |
 | -- | -- |
 | ![Image](https://github.com/user-attachments/assets/30ce2432-15af-4b5f-a9b2-dd8ace9b4507) | ![Image](https://github.com/user-attachments/assets/c3be4d2c-78b8-456c-8731-ac5f4aadf7fc) |
-
----
 
 #### 再設定用メール
 
