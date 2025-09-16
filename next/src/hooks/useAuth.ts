@@ -1,4 +1,3 @@
-import { isAxiosError } from 'axios'
 import { useCallback } from 'react'
 import { api } from '../utils/api'
 import { clearAuthTokens } from '../utils/tokenStorage'
@@ -36,27 +35,10 @@ export const useAuth = () => {
     [],
   )
 
-  // const signOut = useCallback(async () => {
-  //   await api.delete('/auth/sign_out')
-  //   clearAuthTokens()
-  //   await refresh(undefined, { revalidate: false })
-  // }, [refresh])
   const signOut = useCallback(async () => {
-    try {
-      await api.delete('/auth/sign_out')
-    } catch (e) {
-      if (
-        !(
-          isAxiosError(e) &&
-          (e.response?.status === 401 || e.response?.status === 404)
-        )
-      ) {
-        throw e
-      }
-    } finally {
-      clearAuthTokens()
-      await refresh(undefined, { revalidate: false })
-    }
+    await api.delete('/auth/sign_out')
+    clearAuthTokens()
+    await refresh(undefined, { revalidate: false })
   }, [refresh])
 
   const guestSignIn = useCallback(async () => {
