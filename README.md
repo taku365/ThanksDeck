@@ -18,7 +18,7 @@
 
 URL：https://thanksdeck.com
 
-![Image](https://github.com/user-attachments/assets/dc6510df-4b48-4b43-9261-e3b67e969b5e)
+![Image](https://github.com/user-attachments/assets/d7b5c062-d1b6-4fdb-9883-cf584786f460)
 
 <br>
 
