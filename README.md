@@ -67,9 +67,11 @@ URL：https://thanksdeck.com
 
 ## インフラ構成図
 
-![スクリーンショット 2025-09-16 9.52.30.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/4113131/cd06c824-45b6-4784-bd18-b200126d9d50.png)
+<img width="959" height="1090" alt="Image" src="https://github.com/user-attachments/assets/df519c12-03ef-4a43-87fb-c30794f0cb29" />
 
 ## 画面
+
+<img width="1249" height="879" alt="Image" src="https://github.com/user-attachments/assets/655c4c87-21be-4a0e-be46-fdb449357f82" />
 
 ### ホーム
 
@@ -80,5 +82,43 @@ URL：https://thanksdeck.com
 | 入力時バリデーション | 送信時バリデーション |
 | -- | -- |
 |![Image](https://github.com/user-attachments/assets/acc0a46d-02ca-43a3-8ae5-faf69d2894d2) | ![Image](https://github.com/user-attachments/assets/aa95c80c-86ec-4233-8712-53500cef8fb8) |
+
+---
+
+### 新規登録
+
+| 入力時バリデーション | 送信時バリデーション |
+| -- | -- |
+| ![Image](https://github.com/user-attachments/assets/1cb9c947-e076-49a9-ab42-27df87610e90) | ![Image](https://github.com/user-attachments/assets/d67545c7-c244-4f13-bf0b-f302c0cd6106) |
+
+---
+
+### メールアドレス認証
+
+#### 認証確認通知
+
+<img width="1274" height="875" alt="Image" src="https://github.com/user-attachments/assets/3daa023e-4d36-4fef-86a4-d2ee02f51456" />
+
+---
+
+#### 認証用メール
+
+<img width="671" height="339" alt="Image" src="https://github.com/user-attachments/assets/ad62c177-93ca-474f-92f0-a0a69fd333e4" />
+
+---
+
+### パスワードリセット
+
+#### 再設定リクエスト
+
+| 入力時バリデーション | 送信時バリデーション |
+| -- | -- |
+| ![Image](https://github.com/user-attachments/assets/30ce2432-15af-4b5f-a9b2-dd8ace9b4507) | ![Image](https://github.com/user-attachments/assets/c3be4d2c-78b8-456c-8731-ac5f4aadf7fc) |
+
+---
+
+#### 再設定用メール
+
+<img width="668" height="300" alt="Image" src="https://github.com/user-attachments/assets/e077aef2-1d53-4ff4-b155-7ae1879edbb5" />
 
 ---
