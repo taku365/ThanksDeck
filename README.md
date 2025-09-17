@@ -13,7 +13,7 @@
 <br>
 
 ## サービスの概要
-「ThanksDeck（サンクスデック）」は、日々の感謝を記録するための個人向けアプリです。  
+「ThanksDeck（サンクスデッキ）」は、日々の感謝を記録するための個人向けアプリです。  
 **"日々の感謝を忘れない"** をコンセプトに、習慣的なふりかえりをサポートします。
 
 URL：https://thanksdeck.com
@@ -26,6 +26,47 @@ URL：https://thanksdeck.com
 
 ### ・認証・アカウント関連
 メールアドレス認証、パスワードリセット、ゲストログイン
+
+<details>
+<summary>画面</summary>
+
+### ログイン
+
+| 入力時バリデーション | 送信時バリデーション |
+| -- | -- |
+|<img src="https://github.com/user-attachments/assets/acc0a46d-02ca-43a3-8ae5-faf69d2894d2" width="300"> | <img src="https://github.com/user-attachments/assets/aa95c80c-86ec-4233-8712-53500cef8fb8" width="300"> |
+
+
+### 新規登録
+
+| 入力時バリデーション | 送信時バリデーション |
+| -- | -- |
+| <img src="https://github.com/user-attachments/assets/1cb9c947-e076-49a9-ab42-27df87610e90" width="300">| <img src="https://github.com/user-attachments/assets/d67545c7-c244-4f13-bf0b-f302c0cd6106" width="300">
+
+
+### メールアドレス認証
+
+#### 認証確認通知
+
+<img width="600" alt="Image" src="https://github.com/user-attachments/assets/fe4a511f-0602-48b0-b88c-b2e25a3d709b" />
+
+#### 認証用メール
+
+<img width="600" alt="Image" src="https://github.com/user-attachments/assets/ad62c177-93ca-474f-92f0-a0a69fd333e4" />
+
+
+### パスワードリセット
+
+#### 再設定リクエスト
+
+| 入力時バリデーション | 送信時バリデーション |
+| -- | -- |
+| <img src="https://github.com/user-attachments/assets/30ce2432-15af-4b5f-a9b2-dd8ace9b4507" alt="Image" width="300"> | <img src="https://github.com/user-attachments/assets/c3be4d2c-78b8-456c-8731-ac5f4aadf7fc" alt="Image" width="300"> 
+#### 再設定用メール
+
+<img width="600" alt="Image" src="https://github.com/user-attachments/assets/e077aef2-1d53-4ff4-b155-7ae1879edbb5" />
+
+</details>
 
 ### ・カード作成
 手軽に続けられるように、1枚あたり最大140文字、1日3枚まで作成できる仕様にしています。 
@@ -95,7 +136,7 @@ URL：https://thanksdeck.com
 - Route53によるDNS管理
 - ACMによるSSL/TLS証明書付与
 
-**◯ フロントエンド（S3/CloudFront）**
+**◯ フロントエンド（S3＋CloudFront）**
 - S3に静的ファイルを配置し、CloudFront（CDN）経由で高速配信
 - GitHub Actions連携による自動デプロイ（S3アップロード・CloudFrontキャッシュ無効化）
 - HTTPからHTTPSへの自動リダイレクト
@@ -108,51 +149,92 @@ URL：https://thanksdeck.com
 
 <br>
 
+## アプリ開発の振り返り
+
+<details>
+<summary><b>良かった点</b></summary>
+  
+- **設計からデプロイまで一連の流れを経験できたこと**  
+  フロントエンド（Next.js）、バックエンド（Rails API）、データベース（MySQL）、インフラ（Docker・AWS）、さらにCI/CDの構築まで一貫して取り組むことで、Webサービス開発の全体像を把握することができました。  
+
+- **学習リソースの豊富な技術を選定した点**  
+  Next.jsやRailsは情報が多く、検索すれば解決策が見つかりやすいため、完全に行き詰まることなく学習を進められました。
+
+</details>
+
+<br>
+
+<details>
+<summary><b>苦労した点</b></summary>
+
+- **アイデアを形にする難しさ**  
+  0から1を生み出すために、アプリのコンセプトや機能、デザインまで自分で考える必要があり、非常に苦労しました。  
+  また、実際に運用するにはUI/UXだけでなくセキュリティや費用面にも配慮が必要だと知り、Webサービスを1つ作ることの難しさを実感しました。   
+
+- **技術の組み合わせによる難易度の上昇**  
+  個別に学習した技術は理解できても、実際にReactとRailsを連携させたり、AWSで本番環境を構築したりする段階になると一気に難易度が上がりました。特に認証処理やインフラ設定は、思った以上に調整が必要で大きな壁となりました。  
+
+</details>
+
+<br>
+
+<details>
+<summary><b>工夫した点</b></summary>
+
+- **シンプルなUI設計**  
+  MUIを活用し、説明がなくても直感的に操作できるデザインを意識しました。  
+
+- **タスクを小さく分割**  
+  「ページ作成 → API実装 → フロント接続」といった流れで小さなタスクに分割し、エラーが発生した際に原因を切り分けやすくしました。  
+
+- **AIリプライ機能の導入**  
+  ChatGPT APIを利用して、カードに対する自動返信機能を追加しました。これにより、単なる記録用アプリではなく、AIからのフィードバックが得られる独自性のあるサービスに仕上げることができました。  
+
+</details>
+
+<br>
+
+<details>
+<summary><b>反省点</b></summary>
+
+- **仕様を詰めきれずに進めてしまった**  
+  実装を優先するあまり、仕様を十分に固めないまま進めてしまい、後から手戻りが発生する場面がありました。今後は初期段階で画面遷移図やワイヤーフレームをしっかり作成し、設計を整理してから実装に入るようにしたいです。  
+
+- **非機能要件を考慮しきれなかった**  
+  サービスとして運用する場合に重要なパフォーマンス、セキュリティ、コスト最適化などは十分に検討できませんでした。次回はインフラ設計の段階でこれらを意識し、より現実的な構成を目指します。  
+
+- **時間配分の難しさ**  
+  学習と実装を同時並行で進めたため、調査に時間を取られて進捗が遅れることがありました。今後は学習フェーズと実装フェーズを区切り、タスクを明確に分けて取り組むことで効率を高めたいです。  
+
+</details>
+
+<br>
+
+## 今後の展望
+**・UI/UX の改善**  
+今回はMUIを使用しましたが、よりユーザーが利用しやすいUIを実現するためにデザインについて学び、Tailwind CSS なども取り入れて改善していきたいです。  
+
+**・セキュリティ強化**   
+本格的な運用を想定すると、CSRF対策・レート制限・ログ監視など、現状不足しているセキュリティ対策を段階的に導入する必要があります。  
+
+**・機能追加**  
+ソーシャル機能（他ユーザーの投稿閲覧やシェア）  
+AI機能の拡張（カード内容に基づいた分析や感情傾向の可視化）  
+
+<br>
+
+## まとめ
+
+今回、「ThanksDeck」というアプリをポートフォリオとして開発してきました。  
+開発過程では、単に機能を実装するだけではなく、「どうすれば使いやすいか」「学習のモチベーションを維持するにはどうするべきか」というユーザー視点に立ち続けることを常に意識して取り組んできました。  
+
+
 ## 画面
 
 ### ホーム
 
 <img width="600" alt="Image" src="https://github.com/user-attachments/assets/655c4c87-21be-4a0e-be46-fdb449357f82" />
 
----
 
-### ログイン
-
-| 入力時バリデーション | 送信時バリデーション |
-| -- | -- |
-|<img src="https://github.com/user-attachments/assets/acc0a46d-02ca-43a3-8ae5-faf69d2894d2" width="300"> | <img src="https://github.com/user-attachments/assets/aa95c80c-86ec-4233-8712-53500cef8fb8" width="300"> |
-
----
-
-### 新規登録
-
-| 入力時バリデーション | 送信時バリデーション |
-| -- | -- |
-| <img src="https://github.com/user-attachments/assets/1cb9c947-e076-49a9-ab42-27df87610e90" width="300">| <img src="https://github.com/user-attachments/assets/d67545c7-c244-4f13-bf0b-f302c0cd6106" width="300">
-
----
-
-### メールアドレス認証
-
-#### 認証確認通知
-
-<img width="600" alt="Image" src="https://github.com/user-attachments/assets/fe4a511f-0602-48b0-b88c-b2e25a3d709b" />
-
-#### 認証用メール
-
-<img width="600" alt="Image" src="https://github.com/user-attachments/assets/ad62c177-93ca-474f-92f0-a0a69fd333e4" />
-
----
-
-### パスワードリセット
-
-#### 再設定リクエスト
-
-| 入力時バリデーション | 送信時バリデーション |
-| -- | -- |
-| <img src="https://github.com/user-attachments/assets/30ce2432-15af-4b5f-a9b2-dd8ace9b4507" alt="Image" width="300"> | <img src="https://github.com/user-attachments/assets/c3be4d2c-78b8-456c-8731-ac5f4aadf7fc" alt="Image" width="300"> 
-#### 再設定用メール
-
-<img width="600" alt="Image" src="https://github.com/user-attachments/assets/e077aef2-1d53-4ff4-b155-7ae1879edbb5" />
 
 ---
