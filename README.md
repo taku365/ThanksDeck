@@ -2,10 +2,10 @@
 
 ## 目次
 1. [サービスの概要](#サービスの概要)
-2. [主な機能](#主な機能)
-3. [使用技術](#使用技術)
-4. [インフラ構成図](#インフラ構成図)
-5. [本アプリの開発背景について](#本アプリの開発背景について)
+2. [開発背景](#開発背景)
+3. [主な機能](#主な機能)
+4. [使用技術](#使用技術)
+5. [インフラ構成図](#インフラ構成図)
 6. [アプリ開発の振り返り](#アプリ開発の振り返り)
 7. [今後の展望](#今後の展望)
 8. [まとめ](#まとめ)
@@ -25,53 +25,41 @@ URL：https://thanksdeck.com
 ## 主な機能
 
 ### ・認証・アカウント関連
-メールアドレス認証、パスワードリセット、ゲストログイン
+メールアドレス認証、パスワードリセット、ゲストログイン、ユーザー登録
 
-<details>
-<summary>画面</summary>
-
-### ログイン
+#### ログイン
 
 | 入力時バリデーション | 送信時バリデーション |
 | -- | -- |
 |<img src="https://github.com/user-attachments/assets/acc0a46d-02ca-43a3-8ae5-faf69d2894d2" width="300"> | <img src="https://github.com/user-attachments/assets/aa95c80c-86ec-4233-8712-53500cef8fb8" width="300"> |
 
-
-### 新規登録
+#### 新規登録
 
 | 入力時バリデーション | 送信時バリデーション |
 | -- | -- |
 | <img src="https://github.com/user-attachments/assets/1cb9c947-e076-49a9-ab42-27df87610e90" width="300">| <img src="https://github.com/user-attachments/assets/d67545c7-c244-4f13-bf0b-f302c0cd6106" width="300">
 
 
-### メールアドレス認証
-
-#### 認証確認通知
+#### メールアドレス認証
 
 <img width="600" alt="Image" src="https://github.com/user-attachments/assets/fe4a511f-0602-48b0-b88c-b2e25a3d709b" />
-
-#### 認証用メール
-
 <img width="600" alt="Image" src="https://github.com/user-attachments/assets/ad62c177-93ca-474f-92f0-a0a69fd333e4" />
 
 
-### パスワードリセット
-
-#### 再設定リクエスト
+#### パスワードリセット
 
 | 入力時バリデーション | 送信時バリデーション |
 | -- | -- |
 | <img src="https://github.com/user-attachments/assets/30ce2432-15af-4b5f-a9b2-dd8ace9b4507" alt="Image" width="300"> | <img src="https://github.com/user-attachments/assets/c3be4d2c-78b8-456c-8731-ac5f4aadf7fc" alt="Image" width="300"> 
-#### 再設定用メール
 
 <img width="600" alt="Image" src="https://github.com/user-attachments/assets/e077aef2-1d53-4ff4-b155-7ae1879edbb5" />
 
-</details>
 
 ### ・カード作成
 手軽に続けられるように、1枚あたり最大140文字、1日3枚まで作成できる仕様にしています。 
   
   <img src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/4113131/cdd39c21-0cfa-4b4e-95f5-948a97abc679.png" width="250"> 　　<img src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/4113131/52ce8d01-d759-411d-a857-687e82ab2855.png" width="250">
+
 
 ### ・カード一覧表示
 月ごと・日ごとに表示可能。ページネーション対応。
@@ -79,9 +67,11 @@ URL：https://thanksdeck.com
 <img width="300" alt="スクリーンショット 2025-09-17 20 51 29" src="https://github.com/user-attachments/assets/4bd2d64f-54de-42bc-a8b2-35aa5c081e54" />
 <img width="300" alt="スクリーンショット 2025-09-17 20 52 17" src="https://github.com/user-attachments/assets/0d2e7bf3-0c9b-474a-8380-989593420d2b" />
 
+
 ### ・カード詳細表示／編集／削除
 
 <img width="400" alt="スクリーンショット 2025-09-17 20 50 33" src="https://github.com/user-attachments/assets/b92071f5-542e-4798-b433-52f3a65f6bbd" />
+
 
 ### ・カレンダー表示
 記録した日はカレンダー上で色付けされ、習慣の継続状況を視覚的に確認できます。これにより、モチベーション維持につながります。  
@@ -227,14 +217,3 @@ AI機能の拡張（カード内容に基づいた分析や感情傾向の可視
 
 今回、「ThanksDeck」というアプリをポートフォリオとして開発してきました。  
 開発過程では、単に機能を実装するだけではなく、「どうすれば使いやすいか」「学習のモチベーションを維持するにはどうするべきか」というユーザー視点に立ち続けることを常に意識して取り組んできました。  
-
-
-## 画面
-
-### ホーム
-
-<img width="600" alt="Image" src="https://github.com/user-attachments/assets/655c4c87-21be-4a0e-be46-fdb449357f82" />
-
-
-
----
