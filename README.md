@@ -23,21 +23,35 @@ URL：https://thanksdeck.com
 <br>
 
 ## 主な機能
-### 認証・アカウント関連
-- メールアドレス認証、パスワードリセット、ゲストログイン
 
-### ThanksCard
-- カード作成（1日最大3枚まで作成可能）
-- カード一覧表示（月ごと・日ごとにフィルタリング）
-- カード詳細表示／編集／削除
-- ページネーション
+### ・認証・アカウント関連
+メールアドレス認証、パスワードリセット、ゲストログイン
 
-### カレンダー表示
-- 作成済みの日付を色付け
-- クリックでその日のカード一覧へ遷移
+### ・カード作成
+手軽に続けられるように、1枚あたり最大140文字、1日3枚まで作成できる仕様にしています。 
+  
+  <img src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/4113131/cdd39c21-0cfa-4b4e-95f5-948a97abc679.png" width="250"> 　　<img src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/4113131/52ce8d01-d759-411d-a857-687e82ab2855.png" width="250">
 
-### AIリプライ
-- 作成したカードに対してChatGPTが自動返信
+### ・カード一覧表示
+月ごと・日ごとに表示可能。ページネーション対応。
+  
+<img width="300" alt="スクリーンショット 2025-09-17 20 51 29" src="https://github.com/user-attachments/assets/4bd2d64f-54de-42bc-a8b2-35aa5c081e54" />
+<img width="300" alt="スクリーンショット 2025-09-17 20 52 17" src="https://github.com/user-attachments/assets/0d2e7bf3-0c9b-474a-8380-989593420d2b" />
+
+### ・カード詳細表示／編集／削除
+
+<img width="400" alt="スクリーンショット 2025-09-17 20 50 33" src="https://github.com/user-attachments/assets/b92071f5-542e-4798-b433-52f3a65f6bbd" />
+
+### ・カレンダー表示
+記録した日はカレンダー上で色付けされ、習慣の継続状況を視覚的に確認できます。これにより、モチベーション維持につながります。  
+  
+<img src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/4113131/355f5b7e-bbf9-4d45-8283-db45bbcb0cdd.png" width="300">
+
+
+### ・AI返信機能
+  投稿したカード1枚ごとにAIからポジティブな返信が届きます。心理学的にも「行動に対する即時のポジティブフィードバック」は習慣化を促進するとされているため実装しました。  
+
+<img src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/4113131/22cbdfe7-97d4-46f7-baf2-c35d5d5ff268.png" width="300">
 
 <br>
 
@@ -76,6 +90,20 @@ URL：https://thanksdeck.com
 
 ## インフラ構成図
 
+**◯ 全体**
+- フロントエンドとバックエンドをAWSに統合
+- Route53によるDNS管理
+- ACMによるSSL/TLS証明書付与
+
+**◯ フロントエンド（S3/CloudFront）**
+- S3に静的ファイルを配置し、CloudFront（CDN）経由で高速配信
+- GitHub Actions連携による自動デプロイ（S3アップロード・CloudFrontキャッシュ無効化）
+- HTTPからHTTPSへの自動リダイレクト
+
+**◯ バックエンド（ECS/Fargate）**
+- RDSのプライベートサブネットへの配置
+- GitHub ActionsとECRを連携した自動デプロイパイプライン（GitHub Actions → ECR → ECS(Fargate)）
+  
 <img width="600" alt="Image" src="https://github.com/user-attachments/assets/df519c12-03ef-4a43-87fb-c30794f0cb29" />
 
 <br>
