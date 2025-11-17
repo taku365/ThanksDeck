@@ -16,6 +16,7 @@
 **"日々の感謝を忘れない"** をコンセプトに、習慣的な振り返りをサポートします。
 
 URL：https://thanksdeck.com
+> コスト削減を目的に、一般的な業務時間である平日9〜18時に稼働を限定しています。
 
 ![Image](https://github.com/user-attachments/assets/d7b5c062-d1b6-4fdb-9883-cf584786f460)
 
