@@ -4,7 +4,6 @@ import {
   Toolbar,
   Typography,
   Container,
-  IconButton,
   Button,
   Link,
   Dialog,
@@ -62,7 +61,7 @@ export default function Layout({ children }: LayoutProps) {
               <Link
                 component="button"
                 onClick={() => router.push('/signin')}
-                sx={{ mr: 2, color: 'inherit', textTransform: 'none' }}
+                sx={{ mr: 2, color: 'inherit' }}
               >
                 ログイン
               </Link>
@@ -82,13 +81,19 @@ export default function Layout({ children }: LayoutProps) {
               </Button>
             </>
           ) : (
-            <IconButton
+            <Button
               color="inherit"
+              startIcon={<LogoutIcon />}
               aria-label="ログアウト"
               onClick={() => setIsLogoutDialogOpen(true)}
+              sx={{
+                fontSize: '1rem',
+                fontWeight: 550,
+                padding: 0,
+              }}
             >
-              <LogoutIcon />
-            </IconButton>
+              ログアウト
+            </Button>
           )}
         </Toolbar>
       </AppBar>
@@ -98,12 +103,7 @@ export default function Layout({ children }: LayoutProps) {
         <DialogContent>ログアウトしてよろしいですか？</DialogContent>
         <DialogActions>
           <Button onClick={handleLogoutCancel}>キャンセル</Button>
-          <Button
-            color="error"
-            onClick={handleLogout}
-            startIcon={<LogoutIcon />}
-            sx={{ fontWeight: 700 }}
-          >
+          <Button color="error" onClick={handleLogout} sx={{ fontWeight: 700 }}>
             ログアウト
           </Button>
         </DialogActions>

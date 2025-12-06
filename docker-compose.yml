@@ -42,28 +42,5 @@ services:
     ports:
       - "8000:3000"
 
-
-  # redis:
-  #   image: redis:7-alpine
-  #   container_name: redis
-  #   ports:
-  #     - "6379:6379"
-
-
-  # sidekiq:
-  #   build:
-  #     context: ./rails
-  #   command: bash -c "bundle exec sidekiq"
-  #   volumes:
-  #     - ./rails:/myapp
-  #   depends_on:
-  #     - db
-  #     - redis
-  #   env_file:
-  #     - ./rails/.env.development
-  #   tty: true
-  #   stdin_open: true
-
-
 volumes:
   mysql_data:
