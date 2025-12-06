@@ -1,6 +1,5 @@
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import DeleteIcon from '@mui/icons-material/Delete'
-import XIcon from '@mui/icons-material/X'
 import {
   Box,
   Button,
@@ -11,7 +10,6 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
-  Tooltip,
   Typography,
 } from '@mui/material'
 import dayjs from 'dayjs'
@@ -76,11 +74,6 @@ export default function CardDetailPage() {
     router.back()
   }
 
-  // Xシェア用URL
-  const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-    card.content,
-  )}&hashtags=ThanksDeck`
-
   return (
     <Layout>
       {/* 戻るボタン */}
@@ -117,17 +110,6 @@ export default function CardDetailPage() {
             <Typography variant="caption" color="text.secondary">
               {dayjs(card.logged_date).format('YYYY年M月D日')}
             </Typography>
-            <Tooltip title="Xにシェア">
-              <IconButton
-                size="small"
-                component="a"
-                href={shareUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <XIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
           </Box>
 
           {/* 感謝内容エリア */}
@@ -233,7 +215,7 @@ export default function CardDetailPage() {
         <DialogActions>
           <Button onClick={() => setIsDeleteDialogOpen(false)}>いいえ</Button>
           <Button color="error" onClick={handleDelete}>
-            はい、削除
+            削除
           </Button>
         </DialogActions>
       </Dialog>

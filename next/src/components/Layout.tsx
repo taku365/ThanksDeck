@@ -95,12 +95,15 @@ export default function Layout({ children }: LayoutProps) {
 
       {/* ログアウト確認 */}
       <Dialog open={isLogoutDialogOpen} onClose={handleLogoutCancel}>
-        <DialogContent>
-          ログアウトすると再度ログインが必要になります。よろしいですか？
-        </DialogContent>
+        <DialogContent>ログアウトしてよろしいですか？</DialogContent>
         <DialogActions>
           <Button onClick={handleLogoutCancel}>キャンセル</Button>
-          <Button color="error" onClick={handleLogout}>
+          <Button
+            color="error"
+            onClick={handleLogout}
+            startIcon={<LogoutIcon />}
+            sx={{ fontWeight: 700 }}
+          >
             ログアウト
           </Button>
         </DialogActions>

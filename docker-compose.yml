@@ -16,6 +16,7 @@ services:
     platform: linux/arm64/v8
     build:
       context: ./rails
+      dockerfile: Dockerfile
     command: bash -c "tail -f log/development.log"
     volumes:
       - ./rails:/myapp

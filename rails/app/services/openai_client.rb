@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# OpenAI へ問い合わせて 140 文字以内の返信文を返すユーティリティ
 class OpenaiClient
   MODEL = "gpt-4.1-nano"
 
@@ -17,8 +16,8 @@ class OpenaiClient
       parameters: {
         model: MODEL,
         messages: [
-          { role: "system", content: "あなたは優しい励ましの達人である友達です。140文字以内の日本語でフレンドリーに返信してください。" },
-          { role: "user",   content: user_content },
+          { role: "system", content: system_prompt },
+          { role: "user", content: user_content },
         ],
         temperature: 0.7,
       },
@@ -26,5 +25,19 @@ class OpenaiClient
 
     text = response.dig("choices", 0, "message", "content")
     text&.slice(0, 140)
+  end
+
+  def self.system_prompt
+    <<~PROMPT
+      あなたは「感謝カードにそっと共感を添えるアシスタント」です。
+      ユーザーの言葉に対して「対話」ではなく、その気持ちを受け止めて、
+      前向きになれる一言を返してください。
+
+      ユーザーにお礼を返す・会話相手になる・同じ感謝を返す行為は避けてください。
+      日記を読むように、気持ちに寄り添い価値をそっと言語化する役割です。
+
+      140文字以内の日本語で、まあまあフレンドリーに返信してください。
+      絵文字も積極的に使ってください。
+    PROMPT
   end
 end

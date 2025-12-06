@@ -1,4 +1,4 @@
-import MoreVertIcon from '@mui/icons-material/MoreVert'
+import EditIcon from '@mui/icons-material/Edit'
 import {
   Card,
   CardContent,
@@ -49,7 +49,7 @@ export default function CardItem({
               right: 8,
             }}
           >
-            <MoreVertIcon fontSize="small" />
+            <EditIcon fontSize="small" />
           </IconButton>
         </Tooltip>
 
